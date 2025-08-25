@@ -177,7 +177,7 @@ html, body {
   transition: color 0.3s ease;
 }
 .bottom-nav button i {
-  font-size: 20px;
+  font-size: 25px;
   margin-bottom: 3px;
 }
 .bottom-nav button.active,
@@ -546,3 +546,4 @@ html, body {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       }
     }
+
