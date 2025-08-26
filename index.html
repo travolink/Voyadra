@@ -93,26 +93,11 @@
       </div>
 		
 		
-     <!-- Map container -->
-    <div class="map-container" id="mapContainer">
-    <iframe id="mapFrame" src=""></iframe>
-    </div>
+   
 
 
 	
-<script>
-  function openPopup() {
-    document.getElementById('popup').style.display = 'flex';
-  }
 
-  function goToMap(type) {
-    if (type === 'petrol') {
-      window.location.href = "petrol.html";  // go to petrol page
-    } else {
-      window.location.href = "charging.html"; // go to charging page
-    }
-  }
-</script>
 		
 		
 		
@@ -693,9 +678,19 @@
 
     window.addEventListener('resize', updateThumb);
     window.addEventListener('load', updateThumb);  
+
 	  
-	  
-	  
+  function openPopup() {
+    document.getElementById('popup').style.display = 'flex';
+  }
+
+  function goToMap(type) {
+    if (type === 'petrol') {
+      window.location.href = "petrol.html";  // go to petrol page
+    } else {
+      window.location.href = "charging.html"; // go to charging page
+    }
+  }  
 	  
 	  
 	  
