@@ -93,14 +93,49 @@
       </div>
 		
 		
-        <!-- Map container -->
+     <!-- Map container -->
     <div class="map-container" id="mapContainer">
     <iframe id="mapFrame" src=""></iframe>
     </div>
+		
+  
+	<!-- Popup Overlay -->
+<div id="popupOverlay" class="popup-overlay" style="display:none;">
+  <div class="popup-box">
+    <h3>Fuel & Charging</h3>
+    <button onclick="goToPage('petrol')">⛽ Petrol Pump</button>
+    <button onclick="goToPage('ev')">⚡ EV Charging Station</button>
+  </div>
+</div>
 
 
 	
+<script>
+function openPopup() {
+  document.getElementById("popupOverlay").style.display = "flex";
+}
+function closePopup() {
+  document.getElementById("popupOverlay").style.display = "none";
+}
 
+function goToPage(type) {
+  if (type === "petrol") {
+    window.location.href = "petrol.html";  // ✅ new page
+  } else if (type === "ev") {
+    window.location.href = "charging.html";      // ✅ new page
+  }
+}
+
+// ✅ Close popup when clicking outside the box
+window.addEventListener("click", function(event) {
+  const overlay = document.getElementById("popupOverlay");
+  const box = document.querySelector(".popup-box");
+
+  if (event.target === overlay) { 
+    closePopup();
+  }
+});
+</script>
 		
 		
 		
@@ -550,17 +585,7 @@
 	
 	
 	
-	    <!-- Popup -->
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <h3>Select an Option</h3>
-    <div class="actions">
-      <button onclick="goToMap('petrol')">⛽ Petrol Pump</button>
-      <button onclick="goToMap('charging')">⚡ EV Charging Station</button>
-    </div>
-  </div>
-</div>
-	
+
 	
 	
 	
@@ -681,19 +706,9 @@
 
     window.addEventListener('resize', updateThumb);
     window.addEventListener('load', updateThumb);  
-
 	  
-  function openPopup() {
-    document.getElementById('popup').style.display = 'flex';
-  }
-
-  function goToMap(type) {
-    if (type === 'petrol') {
-      window.location.href = "petrol.html";  // go to petrol page
-    } else {
-      window.location.href = "charging.html"; // go to charging page
-    }
-  }  
+	  
+	  
 	  
 	  
 	  
@@ -710,4 +725,3 @@
   </script>
 </body>
 </html>
-
