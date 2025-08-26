@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="VOYADRA LOGO MAIN WITHOUT BG.png" type="image/png">
+  <title>Voyadra</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Nunito&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+	
+	<style>
+	
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+font-family: 'Nunito', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 100px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-links li {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.nav-links li:hover {
+  color: #ff8c1a;
+}
+.nav-links li.active {
+  font-weight: bold;
+  color: black;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+.bottom-nav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+.bottom-nav button i {
+  font-size: 25px;
+  margin-bottom: 3px;
+}
+.bottom-nav button.active,
+.bottom-nav button:hover {
+  color: #ff8c1a;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-links,
+  .icons {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+}
+
+.no-select, .no-select * { 
+	user-select: none !important; 
+   }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+    }
+.map-container {
+  flex: 1;
+  margin: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding-top: 50px; /* space for popup */
+  background: #fff;
+}
+.map-container iframe {
+  width: 100%;
+  height: calc(100vh - 110px); /* adjust for padding + margins */
+  border: 0;
+}
+	
+	</style>
+	
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="navlogo1.png" alt="TravelToor Logo" />
+    </div>
+    <ul class="nav-links">
+      <li class="active">Home</li>
+      <li>Destinations</li>
+      <li>Explore</li>
+      <li>Gallery</li>
+      <li>Contact</li>
+    </ul>
+    <div class="icons">
+      <i class="fas fa-search"></i>
+    </div>
+  </nav>
+
+
+  <!-- Map container -->
+  <div class="map-container" id="mapContainer">
+    <iframe id="mapFrame" src="https://www.google.com/maps?q=petrol+pump+near+me&output=embed"></iframe>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button><i class="ri-home-5-fill"></i></button>
+    <button><i class="ri-search-2-line"></i></button>
+    <button><i class="ri-map-pin-line"></i></button>
+    <button><i class="ri-image-line"></i></button>
+    <button><i class="ri-phone-line"></i></button>
+  </div>
+	
+	
+	
+	
+	
+
+  <script>
+	  
+	const container = document.getElementById('popularContainer');
+    const leftBtn = document.querySelector('.arrow-btn.left');
+    const rightBtn = document.querySelector('.arrow-btn.right');
+
+    leftBtn.addEventListener('click', () => {
+      container.scrollBy({ left: -270, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+      container.scrollBy({ left: 270, behavior: 'smooth' });
+    }); 
+	  
+	  
+    // Bottom nav active state
+    const navButtons = document.querySelectorAll(".bottom-nav button");
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        navButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
