@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="VOYADRA LOGO MAIN WITHOUT BG.png" type="image/png">
+  <title>Voyadra</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Nunito&display=swap" rel="stylesheet">
+  
+  <style>
+	
+	  /* Reset and basic setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+font-family: 'Nunito', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 100px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-links li {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.nav-links li:hover {
+  color: #ff8c1a;
+}
+.nav-links li.active {
+  font-weight: bold;
+  color: black;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+.bottom-nav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+.bottom-nav button i {
+  font-size: 25px;
+  margin-bottom: 3px;
+}
+.bottom-nav button.active,
+.bottom-nav button:hover {
+  color: #ff8c1a;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-links,
+  .icons {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+}
+
+.no-select, .no-select * { user-select: none !important; }
+
+
+   .container {
+  margin: 10px;
+  flex: 1; /* ✅ lets it grow */
+  padding-top: 90px;  /* gap for top nav */
+  padding-bottom: 0;  /* default desktop */
+  display: flex;
+  flex-direction: column;
+}
+
+
+    /* Headings */
+    h2 {
+      margin: 15px 0;
+      color: #222;
+      text-align: left; /* left aligned */
+    }
+
+    /* Responsive Button Grid */
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 40px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      margin: 0;
+      font-weight: bold;
+      color: #333;
+      font-size: 15px;
+    }
+
+/* ✅ Safe gap only for mobile/tablet bottom nav */
+@media (max-width: 768px) {
+  .container {
+    padding-bottom: 80px;
+  }
+}
+
+.map-container {
+  flex: 1;  /* ✅ fill remaining space */
+  margin-top: 20px;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%; /* ✅ always fills */
+  border: 0;
+  border-radius: 10px;
+}	  
+	  
+	  
+	  
+	  
+	  
+	  
+	</style>
+</head>
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="navlogo1.png" alt="TravelToor Logo" />
+    </div>
+    <ul class="nav-links">
+      <li class="active">Home</li>
+      <li>Destinations</li>
+      <li>Explore</li>
+      <li>Gallery</li>
+      <li>Contact</li>
+    </ul>
+    <div class="icons">
+      <i class="fas fa-search"></i>
+    </div>
+  </nav>
+	
+	
+	
+   <div class="container">
+
+    <!-- Emergency Services (Responsive Grid Buttons) -->
+    <div class="button-grid">
+      <div class="card" onclick="window.location.href='tel:100'">
+        <img src="https://img.icons8.com/fluency/96/police-badge.png" alt="Police">
+        <p>Police</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:101'">
+        <img src="https://img.icons8.com/color/96/fire-truck.png" alt="Fire">
+        <p>Fire</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:108'">
+        <img src="https://img.icons8.com/color/96/ambulance.png" alt="Ambulance">
+        <p>Ambulance</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:1091'">
+        <img src="https://img.icons8.com/color/96/woman-head.png" alt="Women Helpline">
+        <p>Women Helpline</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:1098'">
+        <img src="https://img.icons8.com/color/96/children.png" alt="Child Helpline">
+        <p>Child Helpline</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:1070'">
+        <img src="https://img.icons8.com/color/96/error--v1.png" alt="Disaster">
+        <p>Disaster Mgmt</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:04712552056'">
+        <img src="https://img.icons8.com/color/96/policeman-male.png" alt="Tourist Police">
+        <p>Tourist Police</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tel:+914712321132'">
+        <img src="https://img.icons8.com/color/96/info--v1.png" alt="Tourism Help">
+        <p>Tourism Helpline</p>
+      </div>
+    </div>
+
+    <!-- Google Maps Embed (Nearest Hospitals) -->
+    <h2>Nearest Hospitals</h2>
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d62740.81928210766!2d76.2710836!3d9.9312328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1shospitals!5e0!3m2!1sen!2sin!4v1693130532689!5m2!1sen!2sin" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+    </div>
+
+  </div>
+
+	
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button><i class="ri-home-5-fill"></i></button>
+    <button><i class="ri-search-2-line"></i></button>
+    <button><i class="ri-map-pin-line"></i></button>
+    <button><i class="ri-image-line"></i></button>
+    <button><i class="ri-phone-line"></i></button>
+  </div>
+	
+	
+	
+	
+	
+
+  <script>
+	  
+	const container = document.getElementById('popularContainer');
+    const leftBtn = document.querySelector('.arrow-btn.left');
+    const rightBtn = document.querySelector('.arrow-btn.right');
+
+    leftBtn.addEventListener('click', () => {
+      container.scrollBy({ left: -270, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+      container.scrollBy({ left: 270, behavior: 'smooth' });
+    }); 
+	  
+	  
+    // Bottom nav active state
+    const navButtons = document.querySelectorAll(".bottom-nav button");
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        navButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
