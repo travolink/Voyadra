@@ -259,17 +259,17 @@ html, body {
   }
 
   .card {
-    width: 130px;
-    padding: 16px 8px;
+    width: 80px;
+    padding: 8px 3px;
   }
 
   .card img {
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
   }
 
   .card h3 {
-    font-size: 12px;
+    font-size: 7px;
   }
 }
 
@@ -805,4 +805,5 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
+
 
