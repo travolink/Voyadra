@@ -724,7 +724,7 @@ html, body {
 
     .popular {
       flex: 0 0 150px;
-      height: 200px;
+      height: 230px;
     }
 		
 		
@@ -805,6 +805,7 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
+
 
 
 
