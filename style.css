@@ -456,9 +456,9 @@ html, body {
 	  padding-bottom: 20px;
 	  padding-top: 30px;
     }
-    .festivals h2{
-	  font-size: clamp(10px, 1.3vw, 20px);
-	  margin: 0;
+    .festivals h2 {
+      font-size: clamp(12px, 1.5vw, 22px);
+      margin: 0;
     }
     .festivals .arrows {
       position: absolute;
@@ -805,6 +805,7 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
+
 
 
 
