@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="../VOYADRA/VOYADRA LOGO MAIN WITHOUT BG.png" type="image/png">
   <title>Voyadra</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -285,87 +286,82 @@ window.addEventListener("click", function(event) {
   </div>
 	
 	
-    <div class="festivals">
-    <h2>Handpicked Places to Explore</h2>
-    <div class="arrows">
-      <button class="arrow-btn left"><i class="fa-solid fa-chevron-left"></i></button>
-      <button class="arrow-btn right"><i class="fa-solid fa-chevron-right"></i></button>
-    </div>
-  </div>
+	
+	
+  <!-- Slider -->
+  <div class="swiper">
+    <div class="swiper-wrapper">
 
-  <div class="recommended-container" id="recommendedContainer">
-
-    <!-- Popular 1 -->
-    <div class="popular" style="background-image:url('img/varkala.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Varkala</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Thiruvananthapuram</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=1" alt="Kozhikode">
+          <h3>Kozhikode</h3>
+          <p>Historic trade city</p>
         </div>
       </div>
-    </div>
 
-    <!-- Popular 2 -->
-    <div class="popular" style="background-image:url('img/munnar.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Munnar</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Idukki</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=2" alt="Varkala">
+          <h3>Varkala</h3>
+          <p>Cliff beach</p>
         </div>
       </div>
-    </div>
 
-    <!-- Popular 3 -->
-    <div class="popular" style="background-image:url('img/alappuzha.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Alappuzha</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Alappuzha</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=3" alt="Pathanamthitta">
+          <h3>Pathanamthitta</h3>
+          <p>Pilgrim hub</p>
         </div>
       </div>
-    </div>
 
-    <!-- Popular 4 -->
-    <div class="popular" style="background-image:url('img/periyar Wildlife Sanctuary.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Periyar Wildlife Sanctuary</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Idukki</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=4" alt="Idukki">
+          <h3>Idukki</h3>
+          <p>Dam & mountains</p>
         </div>
       </div>
-    </div>
 
-    <!-- Popular 5 -->
-    <div class="popular" style="background-image:url('img/fort kochi.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Fort Kochi</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Ernakulam</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=5" alt="Alappuzha">
+          <h3>Alappuzha</h3>
+          <p>Backwaters</p>
         </div>
       </div>
-    </div>
 
-    <!-- Popular 6 -->
-    <div class="popular" style="background-image:url('img/chembra peak.jpg')">
-      <div class="overlay"></div>
-      <div class="popular-content">
-        <h3>Chembra Peak</h3>
-        <div class="info">
-          <span><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp; Wayanad</span>
+      <div class="swiper-slide">
+        <div class="recommended">
+          <img src="https://picsum.photos/600/400?random=6" alt="Wayanad">
+          <h3>Wayanad</h3>
+          <p>Wildlife & nature</p>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>	
 	
-	
-	
-	
+	  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.swiper', {
+      slidesPerView: 1.5,   // ✅ show 1 full + half of next
+      spaceBetween: 10,
+      loop: true,
+      autoplay: {
+        delay: 2000,
+        disableOnInteraction: false,
+      },
+      speed: 1000,
+      breakpoints: {
+        600: { slidesPerView: 2.5, spaceBetween: 10 },   // 2 full + half
+        900: { slidesPerView: 3.5, spaceBetween: 10 },   // 3 full + half
+        1200: { slidesPerView: 4, spaceBetween: 10 }     // 4 full
+      }
+    });
+  </script>
 	
 	
 	
@@ -833,5 +829,4 @@ window.addEventListener("click", function(event) {
   </script>
 </body>
 </html>
-
 
