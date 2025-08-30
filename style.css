@@ -114,6 +114,9 @@ html, body {
   scroll-padding-right: 16px;
   margin-right: 10px;
   margin-left: 10px;
+  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+  -webkit-focus-ring-color: transparent;
+  outline: none;
 }
 
 .slider::-webkit-scrollbar {
