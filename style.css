@@ -9,9 +9,6 @@ html, body {
   height: 100%;
   background: #fff;
   overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
-  -webkit-focus-ring-color: transparent;
-  outline: none;
 }
 
 /* Navbar */
@@ -169,6 +166,9 @@ html, body {
   align-items: center;
   padding: 10px 0;
   z-index: 1000;
+  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+  -webkit-focus-ring-color: transparent;
+  outline: none;
 }
 .bottom-nav button {
   background: none;
@@ -290,6 +290,9 @@ html, body {
       padding: 30px;
 	  padding-bottom: 10px;
 	  padding-top: 50px;
+	  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+      -webkit-focus-ring-color: transparent;
+      outline: none;
     }
 
     h2 {
@@ -398,6 +401,9 @@ html, body {
       scroll-snap-type: x mandatory;
       background: #fff;
       justify-content: flex-start;
+	  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+      -webkit-focus-ring-color: transparent;
+      outline: none;
     }
 
     .category-container::-webkit-scrollbar {
@@ -529,6 +535,9 @@ html, body {
 		margin-top: 30px;
 		margin-left: 10px;
 		margin-right: 10px;
+		-webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+        -webkit-focus-ring-color: transparent;
+        outline: none;
    }
 
     .tabs-wrapper {
@@ -772,5 +781,4 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
-
 
