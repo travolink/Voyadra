@@ -447,90 +447,51 @@ html, body {
 
 
 
-    .festivals {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      padding-left: 30px;
-	  padding-bottom: 20px;
-	  padding-top: 30px;
+    .swiper {
+      width: 100%;
+	  padding-left: 10px;
+	  padding-right: 10px;
+	  padding-top: 15px;
     }
-    .festivals h2 {
-      font-size: clamp(12px, 1.5vw, 22px);
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+    }
+
+    .recommended {
+      position: relative;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .recommended img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 21 / 9; /* shorter height */
+      object-fit: cover;
+      display: block;
+    }
+
+    .recommended h3,
+    .recommended p {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      color: #fff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
       margin: 0;
     }
-    .festivals .arrows {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      gap: 8px;
-	  padding: 10px;
-	  padding-bottom: 10px;
-	  padding-top: 30px;
+
+    .recommended h3 {
+      bottom: 28px;
+      font-size: clamp(13px, 2vw, 16px);
     }
 
-    .festivals .arrow-btn {
-      background: none;
-      border: none;
-      color: #333;
-      font-size: clamp(11px, 1vw, 13px);
-      cursor: pointer;
-      padding: 6px;
-      transition: color 0.3s;
-    }
-    .recommended-container {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 15px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      margin-left: 20px;
-      margin-right: 15px;
-	  padding-bottom: 30px;
-      /* hide scrollbar */
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .recommended-container::-webkit-scrollbar {
-      display: none;
-    }
-
-    .recommended-container .popular {
-      position: relative;
-      flex: 0 0 240px;
-      height: 140px;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      transition: transform 0.3s;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    }
-
-    .popular:hover {
-      transform: scale(1.02);
-    }
-
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-    }
-
-    .popular-content {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      padding: 8px;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    }
-
-    .popular-content h3 {
-      font-size: 14px;
-      margin: 0 0 3px;
+    .recommended p {
+      bottom: 6px;
+      font-size: clamp(11px, 1.5vw, 13px);
     }
 
 
@@ -805,9 +766,4 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
-
-
-
-
-
 
