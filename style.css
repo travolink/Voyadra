@@ -9,6 +9,9 @@ html, body {
   height: 100%;
   background: #fff;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+  -webkit-focus-ring-color: transparent;
+  outline: none;
 }
 
 /* Navbar */
@@ -769,4 +772,5 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
+
 
