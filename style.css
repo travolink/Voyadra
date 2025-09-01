@@ -792,6 +792,7 @@ html, body {
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
 }
 .modal-content {
   background: #fff;
@@ -895,3 +896,4 @@ td.sunday {
     font-size: 12px;
   }
 }
+
