@@ -497,13 +497,8 @@ html, body {
     }
 
     .recommended h3 {
-      bottom: 15px;
+      bottom: 8px;
       font-size: clamp(13px, 2vw, 16px);
-    }
-
-    .recommended p {
-      bottom: 6px;
-      font-size: clamp(11px, 1.5vw, 13px);
     }
 
 
@@ -769,4 +764,5 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
+
 
