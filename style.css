@@ -785,8 +785,8 @@ html, body {
   z-index: 1000;
   top: 0;
   left: 0;
-  width: calc(100% - 20px);   /* 🔹 respect 10px margin on both sides */
-  height: calc(100% - 20px);  /* 🔹 respect top/bottom margin */
+  width: calc(100%);   /* 🔹 respect 10px margin on both sides */
+  height: calc(100%);  /* 🔹 respect top/bottom margin */
   justify-content: center;
   align-items: center;
   padding: 10px;
@@ -895,5 +895,6 @@ td.sunday {
     font-size: 12px;
   }
 }
+
 
 
