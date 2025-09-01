@@ -273,7 +273,7 @@ window.addEventListener("click", function(event) {
 	
   <div class="category-container">
     <button class="category-btn"><i class="fas fa-cloud-sun"></i> Live Weather</button>
-    <button class="category-btn" onclick="openCalendar()"><i class="fas fa-calendar-alt"></i> Calendar</button>
+    <button id="calendarBtn" class="category-btn"><i class="fas fa-calendar-alt"></i> Calendar</button>
 	<button class="category-btn"><i class="fas fa-bus"></i> Bus Stand</button>
 	<button class="category-btn"><i class="fas fa-train"></i> Railway Stations</button>
 	<button class="category-btn"><i class="fas fa-plane-departure"></i> Airport</button>
@@ -285,144 +285,139 @@ window.addEventListener("click", function(event) {
     <button class="category-btn"><i class="fas fa-pen-nib"></i> Blogs & Stories</button>
   </div>
 	
-	  <div id="calendarModal" class="modal">
+	
+	
+	
+  <div id="calendarModal" class="modal">
     <div class="modal-content">
-      <span class="close-btn" onclick="closeCalendar()">&times;</span>
-      <div class="calendar">
-        <div class="calendar-header">
-          <div class="calendar-arrow" onclick="prevMonth()">&#8592;</div>
-          <div class="month-year" id="monthYear"></div>
-          <div class="calendar-arrow" onclick="nextMonth()">&#8594;</div>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Sun</th><th>Mon</th><th>Tue</th>
-              <th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-            </tr>
-          </thead>
-          <tbody id="calendar-body"></tbody>
-        </table>
-        <div class="note" id="festivalNote"></div>
+      <div class="calendar-header">
+        <div class="calendar-arrow" id="prevMonth">&#9664;</div>
+        <div class="month-year" id="monthYear"></div>
+        <div class="calendar-arrow" id="nextMonth">&#9654;</div>
       </div>
+      <table id="calendarTable">
+        <thead>
+          <tr>
+            <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
+            <th>Thu</th><th>Fri</th><th>Sat</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="note" id="note"></div>
     </div>
   </div>
 	
 	
-	  <script>
-    const keralaDays = {
-      "2025-01-02":"Mannam Jayanthi",
-      "2025-01-14":"Makara Sankranti",
-      "2025-02-21":"Vairankode Vela",
-      "2025-02-26":"Maha Shivaratri",
-      "2025-03-31":"Id-ul-Fitr",
-      "2025-04-01":"Bank Closing (Banks)",
-      "2025-04-14":"Vishu / Ambedkar Jayanti",
-      "2025-05-07":"Thrissur Pooram",
-      "2025-06-06":"Bakrid",
-      "2025-07-06":"Muharram",
-      "2025-07-22":"Achuthanandan Mourning Day",
-      "2025-07-24":"Karkidaka Vavu",
-      "2025-08-09":"Avani Avittam",
-      "2025-08-15":"Independence Day",
-      "2025-09-04":"First Onam",
-      "2025-09-05":"Thiruvonam / Teachers’ Day",
-      "2025-09-07":"Fourth Onam / SN Guru Jayanti",
-      "2025-09-17":"Vishwakarma Puja",
-      "2025-09-21":"SN Guru Samadhi",
-      "2025-10-01":"Mahanavami",
-      "2025-10-02":"Gandhi Jayanti / Vijayadashami",
-      "2025-10-20":"Deepavali",
-      "2025-12-23":"Cochin Carnival",
-      "2025-12-25":"Christmas Day"
-    };
+<script>
+  const keralaDays = {
+    "2025-01-02":"Mannam Jayanthi",
+    "2025-01-14":"Makaravilakku / Makara Sankranti",
+    "2025-02-26":"Maha Shivaratri",
+    "2025-03-31":"Eid-ul-Fitr",
+    "2025-04-01":"Bank Closing",
+    "2025-04-14":"Vishu / Ambedkar Jayanti",
+    "2025-04-18":"Good Friday",
+    "2025-04-20":"Easter",
+    "2025-05-01":"May Day",
+    "2025-05-07":"Thrissur Pooram",
+    "2025-06-06":"Bakrid",
+    "2025-07-06":"Muharram",
+    "2025-07-24":"Karkidaka Vavu",
+    "2025-08-09":"Avani Avittam",
+    "2025-08-15":"Independence Day",
+    "2025-08-28":"Ayyankali Jayanthi",
+    "2025-09-04":"First Onam",
+    "2025-09-05":"Thiruvonam / Milad-i-Sherif",
+    "2025-09-06":"Third Onam",
+    "2025-09-07":"Fourth Onam / SN Guru Jayanti",
+    "2025-09-14":"Sri Krishna Jayanthi",
+    "2025-09-17":"Vishwakarma Day",
+    "2025-09-21":"SN Guru Samadhi",
+    "2025-10-01":"Mahanavami",
+    "2025-10-02":"Vijayadashami / Gandhi Jayanti",
+    "2025-10-20":"Deepavali",
+    "2025-12-23":"Cochin Carnival Begins",
+    "2025-12-25":"Christmas Day"
+  };
 
-    let currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentYear = currentDate.getFullYear();
+  const modal = document.getElementById("calendarModal");
+  const openBtn = document.getElementById("calendarBtn");
 
-    function generateCalendar(month, year) {
-      const monthNames = [
-        "January","February","March","April","May","June",
-        "July","August","September","October","November","December"
-      ];
-      document.getElementById("monthYear").innerText =
-        monthNames[month] + " " + year;
+  // open modal when clicking button
+  openBtn.onclick = () => modal.style.display = "flex";
 
-      const firstDay = new Date(year, month).getDay();
-      const daysInMonth = new Date(year, month+1, 0).getDate();
-      const calendarBody = document.getElementById("calendar-body");
-      calendarBody.innerHTML = "";
+  // close modal when clicking outside
+  window.onclick = (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  };
 
-      let date = 1;
-      for (let i=0; i<6; i++) {
-        let row = document.createElement("tr");
-        for (let j=0; j<7; j++) {
-          let cell = document.createElement("td");
-          if (i === 0 && j < firstDay) {
-            cell.innerHTML = "";
-          } else if (date > daysInMonth) {
-            break;
+  const monthYear = document.getElementById("monthYear");
+  const calendarTable = document.querySelector("#calendarTable tbody");
+  const note = document.getElementById("note");
+
+  let today = new Date();
+  let currentMonth = today.getMonth();
+  let currentYear = today.getFullYear();
+
+  function generateCalendar(month, year) {
+    calendarTable.innerHTML = "";
+    note.innerHTML = "";
+
+    const firstDay = new Date(year, month).getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+
+    const months = ["January","February","March","April","May","June","July",
+                    "August","September","October","November","December"];
+    monthYear.textContent = `${months[month]} ${year}`;
+
+    let date = 1;
+    for (let i=0; i<6; i++) {
+      const row = document.createElement("tr");
+      let emptyRow = true;
+      for (let j=0; j<7; j++) {
+        const cell = document.createElement("td");
+        if (i===0 && j<firstDay) {
+          cell.textContent = "";
+        } else if (date > daysInMonth) {
+          cell.textContent = "";
+        } else {
+          emptyRow = false;
+          let dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(date).padStart(2,"0")}`;
+          if (keralaDays[dateStr]) {
+            cell.classList.add("festival");
+            cell.innerHTML = `<span>${date}</span>`;
+            note.innerHTML += `<div><b>${date} ${months[month]}</b> ${keralaDays[dateStr]}</div>`;
+          } else if (date === today.getDate() && month===today.getMonth() && year===today.getFullYear()) {
+            cell.classList.add("today");
+            cell.innerHTML = `<span>${date}</span>`;
           } else {
-            const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(date).padStart(2,"0")}`;
-            if (keralaDays[dateStr]) {
-              cell.classList.add("festival");
-              cell.innerHTML = `<span>${date}</span>`;
-            } else if (date === currentDate.getDate() &&
-                       month === currentDate.getMonth() &&
-                       year === currentDate.getFullYear()) {
-              cell.classList.add("today");
-              cell.innerHTML = `<span>${date}</span>`;
-            } else if (j === 0) {
+            if (j===0) {
               cell.classList.add("sunday");
-              cell.innerText = date;
-            } else {
-              cell.classList.add("normal");
-              cell.innerText = date;
             }
-            date++;
+            cell.innerHTML = `<span>${date}</span>`;
           }
-          row.appendChild(cell);
+          date++;
         }
-        calendarBody.appendChild(row);
+        row.appendChild(cell);
       }
-
-      // Notes
-      let notesArr = Object.keys(keralaDays)
-        .filter(d => d.startsWith(`${year}-${String(month+1).padStart(2,"0")}`))
-        .map(d => `<li><b>${d.split("-")[2]}:</b> ${keralaDays[d]}</li>`);
-
-      document.getElementById("festivalNote").innerHTML =
-        notesArr.length ? `<ul>${notesArr.join("")}</ul>` : "No special days this month.";
+      if (!emptyRow) calendarTable.appendChild(row);
     }
+  }
 
-    function prevMonth() {
-      if (currentMonth === 0) { currentMonth = 11; currentYear--; }
-      else { currentMonth--; }
-      generateCalendar(currentMonth, currentYear);
-    }
-    function nextMonth() {
-      if (currentMonth === 11) { currentMonth = 0; currentYear++; }
-      else { currentMonth++; }
-      generateCalendar(currentMonth, currentYear);
-    }
+  document.getElementById("prevMonth").onclick = () => {
+    currentMonth = (currentMonth === 0) ? 11 : currentMonth-1;
+    currentYear = (currentMonth === 11) ? currentYear-1 : currentYear;
+    generateCalendar(currentMonth, currentYear);
+  };
+  document.getElementById("nextMonth").onclick = () => {
+    currentMonth = (currentMonth === 11) ? 0 : currentMonth+1;
+    currentYear = (currentMonth === 0) ? currentYear+1 : currentYear;
+    generateCalendar(currentMonth, currentYear);
+  };
 
-    function openCalendar() {
-      document.getElementById("calendarModal").style.display = "flex";
-      generateCalendar(currentMonth, currentYear);
-    }
-    function closeCalendar() {
-      document.getElementById("calendarModal").style.display = "none";
-    }
-
-    // Close when clicking outside
-    window.onclick = function(event) {
-      const modal = document.getElementById("calendarModal");
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-  </script>
+  generateCalendar(currentMonth, currentYear);
+</script>
 	
 	
 	
