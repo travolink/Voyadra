@@ -766,149 +766,132 @@ html, body {
   background: #005f63;
 }
 
-    .open-btn {
-      padding: 12px 20px;
-      background: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .open-btn:hover {
-      background: #43a047;
-    }
 
-    /* Popup Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      animation: fadeIn 0.3s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
 
-    /* Close button */
-    .close-btn {
-      float: right;
-      font-size: 20px;
-      cursor: pointer;
-      color: #666;
-      transition: 0.2s;
-    }
-    .close-btn:hover {
-      color: #000;
-    }
+/* Button */
+.open-calendar {
+  padding: 10px 20px;
+  background: #007b7f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-    .calendar {
-      width: 100%;
-    }
-    .calendar-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 12px;
-      gap: 15px;
-    }
-    .month-year {
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-    }
-    .calendar-arrow {
-      cursor: pointer;
-      font-size: 22px;
-      user-select: none;
-      padding: 0 6px;
-      border-radius: 50%;
-      transition: 0.2s;
-      background: none;
-      color: #333;
-    }
-    .calendar-arrow:hover {
-      color: #000;
-      transform: scale(1.1);
-    }
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: calc(100% - 20px);   /* 🔹 respect 10px margin on both sides */
+  height: calc(100% - 20px);  /* 🔹 respect top/bottom margin */
+  margin: 10px;               /* 🔹 ensure spacing inside viewport */
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.modal-content {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow-x: hidden;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      text-align: center;
-      padding: 8px;
-    }
-    th {
-      background: #fafafa;
-      font-weight: bold;
-    }
-    td {
-      height: 50px;
-    }
+/* Header */
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+.month-year {
+  font-size: 18px;
+  font-weight: bold;
+}
+.calendar-arrow {
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+}
 
-    /* Special circles */
-    td.festival span, td.today span {
-      display: inline-block;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-      text-align: center;
-      font-weight: bold;
-    }
-    td.festival span { background: #ffeb3b; color: #000; }
-    td.today span { background: #4caf50; color: white; }
+/* Calendar table */
+#calendarTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 24px; /* small gap before notes */
+}
+#calendarTable th,
+#calendarTable td {
+  padding: 6px;
+  text-align: center;
+  word-wrap: break-word;
+}
+#calendarTable td span {
+  font-size: 14px;
+}
 
-    /* Sundays red */
-    td.sunday { color: #e53935; font-weight: bold; }
+/* Highlights */
+td.today span {
+  color: #007b7f; /* green for today */
+  font-weight: bold;
+}
+td.festival span {
+  color: #fbc02d; /* yellow for festival */
+  font-weight: bold;
+}
+td.sunday {
+  color: #d32f2f; /* red for Sundays */
+  font-weight: bold;
+}
+.note {
+  margin-top: 0;        /* remove extra, keep spacing controlled by table */
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  color: #333;
+}
+.note div {
+  margin-bottom: 6px;
+  padding-left: 8px;
+  border-left: 3px solid #fbc02d;
+}
+.note b {
+  color: #000;
+  margin-right: 6px;
+}
 
-    /* Notes */
-    .note {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #333;
-      line-height: 1.8;
-      letter-spacing: 0.3px;
-    }
-    .note ul {
-      padding-left: 0;
-      margin: 0;
-      list-style: none;
-    }
-    .note li {
-      margin-bottom: 4px;
-    }
-    .note b {
-      color: #000;
-      font-size: 14px;
-      margin-right: 5px;
-    }
-
-    @media(max-width: 500px) {
-      .modal-content {
-        max-width: 95%;
-        padding: 15px;
-      }
-      th, td { padding: 6px; }
-      .month-year { font-size: 16px; }
-    }
+/* Responsive */
+@media (max-width: 600px) {
+  .modal-content {
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  .month-year {
+    font-size: 16px;
+  }
+  .calendar-arrow {
+    font-size: 18px;
+  }
+  #calendarTable th,
+  #calendarTable td {
+    padding: 4px;
+    font-size: 12px;
+  }
+  #calendarTable td span {
+    font-size: 12px;
+  }
+  .note {
+    font-size: 12px;
+  }
+}
