@@ -511,6 +511,7 @@ html, body {
 
 
 
+
     /* --- Tabs container with custom scrollbar --- */
     .tabs-container { 
 		position: relative; 
@@ -764,5 +765,4 @@ html, body {
 .popup-box button:hover {
   background: #005f63;
 }
-
 
