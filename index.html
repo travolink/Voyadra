@@ -274,8 +274,8 @@ window.addEventListener("click", function(event) {
   <div class="category-container">
     <button class="category-btn"><i class="fas fa-cloud-sun"></i> Live Weather</button>
     <button id="calendarBtn" class="category-btn"><i class="fas fa-calendar-alt"></i> Calendar</button>
-	<button class="category-btn"><i class="fas fa-bus"></i> Bus Stand</button>
-	<button class="category-btn"><i class="fas fa-train"></i> Railway Stations</button>
+	<button id="nearestBusBtn" class="category-btn"><i class="fas fa-bus"></i> Bus Stand</button>
+	<button id="nearestStationBtn" class="category-btn"><i class="fas fa-train"></i> Railway Stations</button>
 	<button class="category-btn"><i class="fas fa-plane-departure"></i> Airport</button>
     <button class="category-btn"><i class="fas fa-subway"></i> Metro</button>
     <button class="category-btn"><i class="fas fa-ship"></i> Water Metro</button>
@@ -418,6 +418,45 @@ window.addEventListener("click", function(event) {
 
   generateCalendar(currentMonth, currentYear);
 </script>
+	
+  <script>
+    function openNearbyPlaces(query) {
+      if (!navigator.geolocation) {
+        alert('Geolocation not supported in this browser.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+
+          let fullQuery = query;
+          if(query === 'Bus Stop'){
+            // Show all nearby bus stops including local
+            fullQuery = 'Bus Stop India';
+          }
+
+          // Google Maps Search URL centered on user location
+          const url = `https://www.google.com/maps/search/${encodeURIComponent(fullQuery)}/@${lat},${lng},15z`;
+          window.open(url, '_blank', 'noopener');
+        },
+        () => {
+          alert('Unable to get location. Please allow GPS and try again.');
+        },
+        { enableHighAccuracy:true, timeout:10000 }
+      );
+    }
+
+    document.getElementById('nearestStationBtn').addEventListener('click', ()=>{
+      openNearbyPlaces('Indian Railway Station');
+    });
+
+    document.getElementById('nearestBusBtn').addEventListener('click', ()=>{
+      openNearbyPlaces('Bus Stop');
+    });
+  </script>
+
 	
 	
 	
