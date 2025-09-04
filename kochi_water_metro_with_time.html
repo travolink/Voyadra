@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="VOYADRA LOGO MAIN WITHOUT BG.png" type="image/png">
+  <title>Voyadra</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Nunito&display=swap" rel="stylesheet">
+  <style>
+	  /* Reset and basic setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: #fff;
+  overflow-x: hidden;
+  padding: 10px;
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 100px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-links li {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.nav-links li:hover {
+  color: #ff8c1a;
+}
+.nav-links li.active {
+  font-weight: bold;
+  color: black;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+.bottom-nav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+.bottom-nav button i {
+  font-size: 25px;
+  margin-bottom: 3px;
+}
+.bottom-nav button.active,
+.bottom-nav button:hover {
+  color: #ff8c1a;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-links,
+  .icons {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+}
+
+.no-select, .no-select * { user-select: none !important; }
+
+
+	
+	    /* Hero Slider */
+    .hero-carousel { position: relative; overflow: hidden; border-radius: 15px; margin-bottom: 40px; height: 350px; }
+    .hero-carousel img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .hero-carousel img.active { display: block; }
+    .hero-overlay { position: absolute; bottom: 20px; left: 20px; color: white; text-shadow: 1px 1px 4px rgba(0,0,0,0.7); }
+    .hero-overlay h1 { font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 10px; font-weight: bold; }
+    .hero-overlay p { font-size: clamp(0.9rem, 2vw, 1.2rem); margin: 5px 0; }
+
+    /* Stations Grid */
+    .stations-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    @media (max-width: 1024px) { .stations-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) { .stations-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stations-grid { grid-template-columns: 1fr; } }
+
+    .station-card { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0px 6px 14px rgba(0,0,0,0.2); height: 220px; color: white; cursor: pointer; transition: transform 0.2s; }
+    .station-card:hover { transform: scale(1.03); }
+    .station-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+    .station-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 15px; background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0)); }
+    .station-overlay h5 { margin: 0; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: bold; }
+    .station-overlay a { display: inline-block; margin-top: 5px; font-size: clamp(0.75rem, 1.5vw, 0.9rem); color: #fff; text-decoration: none; background: rgba(0,123,127,0.9); padding: 5px 12px; border-radius: 8px; transition: background 0.2s; }
+    .station-overlay a:hover { background: rgba(0,95,98,0.95); }
+	
+	
+	</style>
+</head>
+<body>
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="navlogo1.png" alt="TravelToor Logo" />
+    </div>
+    <ul class="nav-links">
+      <li class="active">Home</li>
+      <li>Destinations</li>
+      <li>Explore</li>
+      <li>Gallery</li>
+      <li>Contact</li>
+    </ul>
+    <div class="icons">
+      <i class="fas fa-search"></i>
+    </div>
+  </nav>
+	
+	
+	
+	  <!-- Hero Slider -->
+  <div class="hero-carousel">
+    <img src="img/metro-hero.jpg" alt="Hero 1" class="active">
+    <div class="hero-overlay">
+      <h1>Kochi Water Metro Stations</h1>
+      <p>Explore all Kochi Water Metro stations with directions.</p>
+      <p>Operates from <strong>6:30 AM to 9:30 PM</strong> with frequent departures during peak hours.</p>
+    </div>
+  </div>
+
+  <!-- Water Metro Stops -->
+  <div class="stations-grid" id="stationsGrid"></div>
+
+  <script>
+    // Hero Slider auto-slide
+    const heroImages = [
+      {src: "img/metro-hero.jpg", title:"Kochi Water Metro Stations", desc1:"Explore all Kochi Water Metro stations with directions.", desc2:"Operates from 6:30 AM to 9:30 PM with frequent departures during peak hours."},
+      {src: "img/metro-hero2.jpg", title:"Kochi Water Metro Stations", desc1:"Plan your journey across the Water Metro network.", desc2:"Convenient, fast, and scenic travel across Kochi waterways."},
+      {src: "img/metro-hero3.jpg", title:"Kochi Water Metro Stations", desc1:"Get directions for each station easily.", desc2:"All stations are linked via Google Maps for easy navigation."}
+    ];
+    let currentSlide = 0;
+    const carousel = document.querySelector('.hero-carousel');
+    const imgElement = carousel.querySelector('img');
+    const overlay = carousel.querySelector('.hero-overlay');
+    function showSlide(index){
+      if(index < 0) index = heroImages.length -1;
+      if(index >= heroImages.length) index = 0;
+      currentSlide = index;
+      imgElement.src = heroImages[index].src;
+      overlay.innerHTML = `<h1>${heroImages[index].title}</h1>
+        <p>${heroImages[index].desc1}</p>
+        <p>${heroImages[index].desc2}</p>`;
+    }
+    setInterval(()=>showSlide(currentSlide+1), 5000); // Auto-slide
+
+    // Water Metro Stations
+    const stations = [
+      "High Court","Marine Drive","Matrimony Junction","Vypin","Fort Kochi","Willingdon Island",
+      "Bolgatty","Kadamakudy","Thevara","Edakochi","Munambam","Cherai Beach",
+      "Kakkanad","Palarivattom","Vyttila","Tripunithura"
+    ];
+    const stationsGrid = document.getElementById('stationsGrid');
+    stations.forEach(station => {
+      const link = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station+" Water Metro Station, Kochi")}`;
+      const card = document.createElement('div');
+      card.className = 'station-card';
+      card.innerHTML = `
+        <img src="img/metro.png" alt="${station}">
+        <div class="station-overlay">
+          <h5>${station}</h5>
+          <a href="${link}" target="_blank">Get Directions</a>
+        </div>
+      `;
+      stationsGrid.appendChild(card);
+    });
+  </script>
+
+	
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button><i class="ri-home-5-fill"></i></button>
+    <button><i class="ri-search-2-line"></i></button>
+    <button><i class="ri-map-pin-line"></i></button>
+    <button><i class="ri-image-line"></i></button>
+    <button><i class="ri-phone-line"></i></button>
+  </div>
+	
+	
+	
+	
+	
+
+  <script>
+	  
+	const container = document.getElementById('popularContainer');
+    const leftBtn = document.querySelector('.arrow-btn.left');
+    const rightBtn = document.querySelector('.arrow-btn.right');
+
+    leftBtn.addEventListener('click', () => {
+      container.scrollBy({ left: -270, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+      container.scrollBy({ left: 270, behavior: 'smooth' });
+    }); 
+	  
+	  
+    // Bottom nav active state
+    const navButtons = document.querySelectorAll(".bottom-nav button");
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        navButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
