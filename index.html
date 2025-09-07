@@ -436,51 +436,159 @@ window.addEventListener("click", function(event) {
 </script>
 	
 	
-  <!-- Map Popup -->
-  <div id="mapPopup" class="map-popup" onclick="outsideClick(event)">
-    <div class="map-popup-content">
-      <span class="close-map-popup" onclick="closePopup()">&times;</span>
+  <!-- Map popup -->
+  <div id="mapPopup" class="map-popup" onclick="onOutsideClick(event)">
+    <div class="map-popup-content" role="dialog" aria-modal="true">
+      <span class="close-map-popup" aria-label="Close" onclick="closePopup()">&times;</span>
       <div class="map-popup-header" id="popupTitle">Nearby</div>
+
       <div id="popupBody">
-        <div class="spinner"></div>
+        <!-- initial state: spinner -->
+        <div class="spinner" aria-hidden="true"></div>
         <p>Fetching your location…</p>
+        <div class="muted" id="popupHint">This may take a few seconds on mobile. You can allow location once and we cache it for fast next loads.</div>
       </div>
     </div>
   </div>
 
   <script>
-    const popup = document.getElementById("mapPopup");
-    const popupTitle = document.getElementById("popupTitle");
-    const popupBody = document.getElementById("popupBody");
+  /***********************
+   * Robust geolocation popup with caching & background refresh
+   ***********************/
+  const popup = document.getElementById('mapPopup');
+  const popupBody = document.getElementById('popupBody');
+  const popupTitle = document.getElementById('popupTitle');
+  const GEO_CACHE_KEY = 'kt_geo_cache_v1';      // storage key
+  const CACHE_TTL = 5 * 60 * 1000;              // 5 minutes validity
+  let pendingRefresh = false;
 
-    function openMap(query, title) {
-      popup.style.display = "flex"; // show immediately
-      popupTitle.textContent = title;
-      popupBody.innerHTML = '<div class="spinner"></div><p>Fetching your location…</p>';
+  // Helper: get cached coords if fresh
+  function getCachedPosition() {
+    try {
+      const raw = localStorage.getItem(GEO_CACHE_KEY);
+      if (!raw) return null;
+      const obj = JSON.parse(raw);
+      if (!obj.ts || !obj.lat || !obj.lon) return null;
+      if ((Date.now() - obj.ts) > CACHE_TTL) return null; // stale
+      return obj;
+    } catch (e) { return null; }
+  }
+  function saveCachedPosition(lat, lon) {
+    try { localStorage.setItem(GEO_CACHE_KEY, JSON.stringify({ lat, lon, ts: Date.now() })); } catch(e){/* ignore */}
+  }
+  function formatAge(ts) {
+    const s = Math.round((Date.now() - ts) / 1000);
+    if (s < 60) return s + 's';
+    if (s < 3600) return Math.round(s/60) + 'm';
+    return Math.round(s/3600) + 'h';
+  }
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const url = `https://www.google.com/maps/search/${query}/@${lat},${lon},14z`;
-            popupBody.innerHTML = `
-              <p>Click below to open in Google Maps:</p>
-              <a href="${url}" class="map-link" target="_blank">Open in Google Maps</a>
-            `;
-          },
-          () => { 
-            popupBody.innerHTML = "<p>Unable to get your location. Please allow location access.</p>";
-          },
-          { enableHighAccuracy: false, timeout: 10000 }
-        );
-      } else {
-        popupBody.innerHTML = "<p>Your browser does not support location services.</p>";
+  // Build google maps search url
+  function mapsUrlFor(query, lat, lon, zoom = 14) {
+    return `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lon},${zoom}z`;
+  }
+
+  // Show popup immediately. If cached -> show cached link + kick off background refresh.
+  // If no cache -> show spinner and wait for geolocation.
+  function openMap(query, title) {
+    popupTitle.textContent = title;
+    popup.style.display = 'flex';
+
+    const cached = getCachedPosition();
+    if (cached) {
+      // show immediate link using cached coords
+      popupBody.innerHTML = `
+        <p class="muted">Using cached location (updated ${formatAge(cached.ts)} ago)</p>
+        <a id="mapLinkBtn" class="map-link" target="_blank" href="${mapsUrlFor(query, cached.lat, cached.lon)}">Open in Google Maps</a>
+        <div class="muted" style="margin-top:10px">Refreshing location in background…</div>
+      `;
+      // background refresh (don't spam if already refreshing)
+      if (!pendingRefresh) {
+        pendingRefresh = true;
+        fetchAndUpdate(query, /*background=*/true).finally(()=> pendingRefresh = false);
       }
+    } else {
+      // no cache -> show spinner and request location
+      popupBody.innerHTML = `
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Fetching your location…</p>
+        <div class="muted">Please allow location access when prompted.</div>
+      `;
+      fetchAndUpdate(query, /*background=*/false);
     }
+  }
 
-    function closePopup() { popup.style.display = "none"; }
-    function outsideClick(event) { if (event.target === popup) closePopup(); }
+  // Request live position and update popup.
+  // background = true -> we won't replace a "user denied" message, just show cached fallback.
+  async function fetchAndUpdate(query, background) {
+    // If browser supports Permissions API, check status quickly
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        try {
+          const perm = await navigator.permissions.query({ name: 'geolocation' });
+          if (perm.state === 'denied') {
+            // permission denied -> show helpful message and return
+            popupBody.innerHTML = `
+              <p class="muted">Location access is blocked. To use this feature enable location permissions for this site in your browser settings.</p>
+              <div style="margin-top:12px;">
+                <a class="map-link" href="https://www.google.com/maps" target="_blank">Open Google Maps</a>
+              </div>
+            `;
+            return;
+          }
+        } catch(e) { /* ignore permission check errors */ }
+      }
+    } catch(e) {}
+
+    // wrap getCurrentPosition in a Promise
+    const getPos = () => new Promise((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error('Geolocation not supported'));
+      navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 });
+    });
+
+    try {
+      const pos = await getPos();
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      // save cache
+      saveCachedPosition(lat, lon);
+      // update popup with the fresh link
+      popupBody.innerHTML = `
+        <p class="muted">Accurate location found</p>
+        <a id="mapLinkBtn" class="map-link" target="_blank" href="${mapsUrlFor(query, lat, lon)}">Open in Google Maps</a>
+        <div class="muted" style="margin-top:10px">Location updated just now</div>
+      `;
+    } catch (err) {
+      // On error, check cache: if we have it, show cached link + warning (only if background or cached exist)
+      const cached = getCachedPosition();
+      if (cached) {
+        popupBody.innerHTML = `
+          <p class="muted">Using cached location (updated ${formatAge(cached.ts)} ago). Fresh fetch failed: ${err?.message || 'error'}</p>
+          <a id="mapLinkBtn" class="map-link" target="_blank" href="${mapsUrlFor(query, cached.lat, cached.lon)}">Open in Google Maps</a>
+          <div class="muted" style="margin-top:10px">If you recently denied permission, enable it in browser settings to refresh location.</div>
+        `;
+        return;
+      }
+
+      // no cache -> show helpful error and fallback button
+      popupBody.innerHTML = `
+        <p class="muted">Unable to get your location — ${err?.message || 'permission or timeout' }.</p>
+        <p class="muted">Please ensure location is allowed and try again.</p>
+        <div style="margin-top:12px;">
+          <a class="map-link" href="https://www.google.com/maps" target="_blank">Open Google Maps</a>
+        </div>
+      `;
+    }
+  }
+
+  // close handlers
+  function closePopup() { popup.style.display = 'none'; }
+  function onOutsideClick(e) { if (e.target === popup) closePopup(); }
+
+  // expose openMap globally (buttons call it inline)
+  window.openMap = openMap;
+  window.closePopup = closePopup;
+  window.onOutsideClick = onOutsideClick;
   </script>
 
 	
