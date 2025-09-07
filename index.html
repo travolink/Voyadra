@@ -215,7 +215,7 @@
     <button id="calendarBtn" class="category-btn"><i class="fas fa-calendar-alt"></i> Calendar</button>
 	<button class="category-btn" onclick="openMap('nearest bus stand','Bus Stands')"><i class="fas fa-bus"></i> Bus Stand</button>
 	<button class="category-btn" onclick="openMap('nearest indian railway station','Railway Station')"><i class="fas fa-train"></i> Railway Stations</button>
-	<button class="category-btn"><i class="fas fa-plane-departure"></i> Airport</button>
+	<button class="category-btn" onclick="openAirportPopup()"><i class="fas fa-plane-departure"></i> Airport</button>
     <button class="category-btn" onclick="window.location.href='kochi_metro_with_time.html'"><i class="fas fa-subway"></i> Metro</button>
     <button class="category-btn" onclick="window.location.href='kochi_water_metro_with_time.html'"><i class="fas fa-ship"></i> Water Metro</button>
     <button class="category-btn" onclick="openMap('nearest toll plaza','Toll Booth')"><i class="fas fa-road"></i> Toll Booth</button>
@@ -405,6 +405,60 @@ function openMap(query, title){
   }
 }
 
+// Airport popup with nearest airport first
+function openAirportPopup(){
+  popup.style.display = "flex";
+  popupTitle.textContent = "Airports in Kerala";
+  popupBody.innerHTML = '<div class="spinner"></div><p>Fetching your location…</p>';
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        const userLat = pos.coords.latitude;
+        const userLon = pos.coords.longitude;
+
+        const airports = [
+          {name:"Trivandrum International Airport", code:"TRV", lat:8.4825, lon:76.9200},
+          {name:"Cochin International Airport", code:"COK", lat:10.1520, lon:76.4019},
+          {name:"Calicut International Airport", code:"CCJ", lat:11.1360, lon:75.9550},
+          {name:"Kannur International Airport", code:"CNN", lat:11.9167, lon:75.5472}
+        ];
+
+        // Sort airports by distance to user
+        airports.forEach(a=>{ a.dist = getDistance(userLat,userLon,a.lat,a.lon); });
+        airports.sort((a,b)=>a.dist - b.dist);
+
+        // Create list
+        let html = '<div class="sub-option-list">';
+        airports.forEach(a=>{
+          html += `<div class="sub-option-item" onclick="openAirportDirection(${userLat},${userLon},'${a.name}','${a.code}')">
+                    <i class="fas fa-plane"></i> ${a.name} (${a.code})
+                  </div>`;
+        });
+        html += '</div>';
+        popupBody.innerHTML = html;
+      },
+      ()=>{ popupBody.innerHTML="<p>Unable to get your location. Please allow location access.</p>"; }
+    );
+  }
+}
+
+// Open Google Maps direction to selected airport
+function openAirportDirection(userLat,userLon,name,code){
+  const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLon}&destination=${encodeURIComponent(name)}&travelmode=driving`;
+  window.open(url,'_blank');
+}
+
+// Haversine formula to calculate distance
+function getDistance(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  const c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R*c;
+}
+
 // New buttons
 function openService(service){
   popup.style.display = "flex";
@@ -469,7 +523,7 @@ function serviceToTitle(service){
 
 function closePopup(){ popup.style.display="none"; }
 function outsideClick(event){ if(event.target===popup) closePopup(); }
-</script>	
+</script>
 
 
 	
