@@ -441,31 +441,41 @@ window.addEventListener("click", function(event) {
     <div class="map-popup-content">
       <span class="close-map-popup" onclick="closePopup()">&times;</span>
       <div class="map-popup-header" id="popupTitle">Nearby</div>
-      <p>Click below to open in Google Maps:</p>
-      <a id="mapLink" class="map-link" target="_blank">Open in Google Maps</a>
+      <div id="popupBody">
+        <div class="spinner"></div>
+        <p>Fetching your location…</p>
+      </div>
     </div>
   </div>
 
   <script>
     const popup = document.getElementById("mapPopup");
-    const mapLink = document.getElementById("mapLink");
     const popupTitle = document.getElementById("popupTitle");
+    const popupBody = document.getElementById("popupBody");
 
     function openMap(query, title) {
+      popup.style.display = "flex"; // show immediately
+      popupTitle.textContent = title;
+      popupBody.innerHTML = '<div class="spinner"></div><p>Fetching your location…</p>';
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (pos) => {
             const lat = pos.coords.latitude;
             const lon = pos.coords.longitude;
             const url = `https://www.google.com/maps/search/${query}/@${lat},${lon},14z`;
-            mapLink.href = url;
-            popupTitle.textContent = title;
-            popup.style.display = "flex";
+            popupBody.innerHTML = `
+              <p>Click below to open in Google Maps:</p>
+              <a href="${url}" class="map-link" target="_blank">Open in Google Maps</a>
+            `;
           },
-          () => { alert("Please allow location access to use this feature."); }
+          () => { 
+            popupBody.innerHTML = "<p>Unable to get your location. Please allow location access.</p>";
+          },
+          { enableHighAccuracy: false, timeout: 10000 }
         );
       } else {
-        alert("Geolocation not supported in your browser.");
+        popupBody.innerHTML = "<p>Your browser does not support location services.</p>";
       }
     }
 
