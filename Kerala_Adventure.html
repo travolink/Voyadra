@@ -10,8 +10,19 @@
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Nunito', sans-serif; }
-html, body { height:100%; overflow:hidden; }
-.page-content { height:100%; width:100%; overflow-y:auto; padding:10px; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+  height: 100%;
+  overflow-y: auto;   /* ✅ allow scrolling */
+}
+
+.page-content {
+  padding: 10px;
+  /* Remove height:100% and overflow here */
+  padding-bottom: 70px; /* keep space for bottom nav on mobile */
+}
 
 /* Navbar */
 .navbar { display:flex; justify-content:space-between; align-items:center; padding:15px 100px; background:#fff; position:fixed; top:0; left:0; width:100%; z-index:1000; }
@@ -313,3 +324,4 @@ window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style
 </script>
 </body>
 </html>
+
