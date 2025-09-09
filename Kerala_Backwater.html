@@ -23,6 +23,9 @@ html, body {
   /* Remove height:100% and overflow here */
   padding-bottom: 70px; /* keep space for bottom nav on mobile */
 }
+a {
+  text-decoration: none;
+}
 
 /* Navbar */
 .navbar { display:flex; justify-content:space-between; align-items:center; padding:15px 100px; background:#fff; position:fixed; top:0; left:0; width:100%; z-index:1000; }
@@ -348,11 +351,11 @@ html, body {
 
 <!-- Bottom nav -->
 <div class="bottom-nav">
-  <button><i class="ri-home-5-fill"></i></button>
-  <button><i class="ri-search-2-line"></i></button>
-  <button><i class="ri-map-pin-line"></i></button>
-  <button onclick="window.open('https://www.instagram.com/voyadra/', '_blank')"><i class="ri-image-line"></i></button>
-  <button><i class="ri-phone-line"></i></button>
+  <a href="index.html"><button><i class="ri-home-5-fill"></i></button></a>
+  <a href=""><button><i class="ri-search-2-line"></i></button></a>
+  <a href=""><button><i class="ri-map-pin-line"></i></button></a>
+  <a href="https://www.instagram.com/voyadra"><button><i class="ri-image-line"></i></button></a>
+  <a href=""><button><i class="ri-phone-line"></i></button></a>
 </div>
 
 <script>
@@ -431,3 +434,4 @@ window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style
 </script>
 </body>
 </html>
+
