@@ -193,23 +193,72 @@ html,body{margin:0;display:flex;flex-direction:column;height:100%;background:#ff
     <button><i class="ri-phone-line"></i></button>
   </div>
 
-  <!-- Hospital Script -->
-  <script>
-    function openHospital(){
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(pos=>{
-          const lat=pos.coords.latitude;
-          const lon=pos.coords.longitude;
-          const url = `https://www.google.com/maps/search/nearest+hospital/@${lat},${lon},14z`;
-          window.open(url,"_blank");
-        },()=>{
-          alert("Unable to get your location. Please allow location access.");
-        });
-      } else {
-        alert("Geolocation is not supported by this browser.");
+<script>
+// -----------------------------
+// Show / Hide Loading Popup
+// -----------------------------
+function showLoading() {
+  let loader = document.getElementById("loading-popup");
+  if (!loader) {
+    loader = document.createElement("div");
+    loader.id = "loading-popup";
+    loader.style.position = "fixed";
+    loader.style.top = "0";
+    loader.style.left = "0";
+    loader.style.width = "100%";
+    loader.style.height = "100%";
+    loader.style.background = "rgba(0,0,0,0.5)";
+    loader.style.display = "flex";
+    loader.style.alignItems = "center";
+    loader.style.justifyContent = "center";
+    loader.style.zIndex = "2000";
+    loader.innerHTML = `<div style="background:#fff;padding:20px 30px;
+                         border-radius:10px;font-size:16px;color:#333;
+                         font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+                         Loading, please wait...</div>`;
+    document.body.appendChild(loader);
+  }
+  loader.style.display = "flex";
+}
+
+function hideLoading() {
+  const loader = document.getElementById("loading-popup");
+  if (loader) loader.style.display = "none";
+}
+
+// -----------------------------
+// General Nearby Search Function
+// -----------------------------
+function openNearby(place) {
+  showLoading();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        const query = encodeURIComponent(place);
+        const url = `https://www.google.com/maps/search/${query}/@${lat},${lon},14z`;
+        hideLoading();
+        window.open(url, "_blank");
+      },
+      () => {
+        hideLoading();
+        alert("Unable to get your location. Please allow location access.");
       }
-    }
-  </script>
+    );
+  } else {
+    hideLoading();
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function openHospital() { openNearby("Nearest Hospital"); }
+
+</script>
+
+
+
+
 
 </body>
 </html>
