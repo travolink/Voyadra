@@ -89,7 +89,7 @@
 	  <div class="slider-wrapper">
     <div class="slider">
 		
-    <div class="card" onclick="openFuelOptions()">
+    <div class="card" data-popup="fuelPopup">
 	<img src="img/Fuel & Charging.png" alt="Fuel & Charging">
 	<h3>Fuel & Charging</h3>
     </div>
@@ -99,22 +99,22 @@
     <h3>Care & Emergency</h3>
     </div>
 		
-    <div class="card" onclick="window.open('https://www.google.com/maps/search/nearest+restroom/', '_blank')">
+    <div class="card" data-url="https://www.google.com/maps/search/nearest+rest+stop/">
 	<img src="img/Rest Stops.png" alt="Rest Stops">
 	<h3>Rest Stops</h3>
 	</div>
 	
-	<div class="card" onclick="window.open('https://www.google.com/maps/search/nearest+cafe+restaurant/', '_blank')">
+	<div class="card" data-url="https://www.google.com/maps/search/nearest+restaurant+cafe/">
 	<img src="img/Eat & Drink.png" alt="Eat & Drink">
 	<h3>Eat & Drink</h3>
 	</div>	
 
-    <div class="card" onclick="window.open('https://www.google.com/maps/search/nearest+hotels+guesthouses/', '_blank')">
+    <div class="card" data-url="https://www.google.com/maps/search/nearest+hotel+guesthouse/">
 	<img src="img/Stay & Accommodation.png" alt="Stay">
 	<h3>Stay</h3>
 	</div>
 		
-	<div class="card" onclick="openHelpDesk()">
+	<div class="card" data-popup="helpPopup">
 	<img src="img/Support & Services.png" alt="Help Desk">
 	<h3>Help Desk</h3>
 	</div>
@@ -127,15 +127,15 @@
 	
 	<!-- Fuel Popup -->
 <div id="fuelPopup" class="popup-overlay">
-  <div class="popup-box">
-    <h3>Select Option</h3>
-    <button onclick="window.open('https://www.google.com/maps/search/nearest+petrol+pump/', '_blank')">
+  <div class="popup-content">
+    <span class="close-btn" data-close="fuelPopup">&times;</span>
+    <h3>Select Fuel Option</h3>
+    <button class="popup-btn" data-url="https://www.google.com/maps/search/nearest+petrol+pump/">
       <i class="fas fa-gas-pump"></i> Petrol Pump
     </button>
-    <button onclick="window.open('https://www.google.com/maps/search/nearest+ev+charging+station/', '_blank')">
+    <button class="popup-btn" data-url="https://www.google.com/maps/search/nearest+ev+charging/">
       <i class="fas fa-bolt"></i> EV Charging
     </button>
-    <span class="close-btn" onclick="closePopup('fuelPopup')">&times;</span>
   </div>
 </div>
 
@@ -143,7 +143,7 @@
 <div id="helpPopup" class="popup-overlay">
   <div class="popup-box">
     <h3>Help Desk</h3>
-    <button onclick="window.open('https://www.google.com/maps/search/nearest+two+wheeler+workshops+showrooms/', '_blank')">
+    <button data-url="https://www.google.com/maps/search/nearest+two+wheeler+workshops+showrooms/">
       <i class="fas fa-motorcycle"></i> Two Wheeler
     </button>
     <button onclick="window.open('https://www.google.com/maps/search/nearest+three+wheeler+workshops+showrooms/', '_blank')">
@@ -155,7 +155,7 @@
     <button onclick="window.open('https://www.google.com/maps/search/nearest+tyre+puncher+shop/', '_blank')">
       <i class="fas fa-circle"></i> Tyre & Puncture
     </button>
-    <span class="close-btn" onclick="closePopup('helpPopup')">&times;</span>
+    <span class="close-btn" data-close="helpPopup">&times;</span>
   </div>
 </div>
 
@@ -175,18 +175,57 @@
     <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=Kannur+International+Airport', '_blank')">
       <i class="fas fa-plane"></i> Kannur International Airport (CNN)
     </button>
-    <span class="close-btn" onclick="closePopup('airportPopup')">&times;</span>
+    <span class="close-btn" data-close="airportPopup">&times;</span>
   </div>
 </div>
 
-<script>
-  // Popup controls
-  function openFuelOptions(){ document.getElementById('fuelPopup').style.display='flex'; }
-  function openHelpDesk(){ document.getElementById('helpPopup').style.display='flex'; }
-  function openAirportOptions(){ document.getElementById('airportPopup').style.display='flex'; }
-  function closePopup(id){ document.getElementById(id).style.display='none'; }
 
-  // Close popup when clicking outside
+	
+<script>
+  // Handle clicks for cards, category buttons, and popup buttons
+  function handleClick(el) {
+    const url = el.getAttribute('data-url');
+    const popupId = el.getAttribute('data-popup');
+
+    if (url) {
+      el.classList.add('tap-active');
+      setTimeout(() => {
+        window.open(url, '_blank');
+        el.classList.remove('tap-active');
+      }, 180);
+    } else if (popupId) {
+      document.getElementById(popupId).style.display = 'flex';
+    }
+  }
+
+  // Cards
+  document.querySelectorAll('.card[data-url], .card[data-popup]').forEach(card => {
+    card.addEventListener('click', () => handleClick(card));
+  });
+
+  // Category buttons
+  document.querySelectorAll('.category-btn[data-url], .category-btn[data-popup]').forEach(btn => {
+    btn.addEventListener('click', () => handleClick(btn));
+  });
+
+  // Popup buttons inside overlays
+  document.querySelectorAll('.popup-btn[data-url]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const url = btn.getAttribute('data-url');
+      if (url) {
+        btn.classList.add('tap-active');
+        setTimeout(() => {
+          window.open(url, '_blank');
+          btn.classList.remove('tap-active');
+          // 🔥 auto-close popup after button click
+          const overlay = btn.closest('.popup-overlay');
+          if (overlay) overlay.style.display = 'none';
+        }, 200);
+      }
+    });
+  });
+
+  // Close popup when clicking outside overlay
   document.querySelectorAll('.popup-overlay').forEach(overlay => {
     overlay.addEventListener('click', e => {
       if (e.target === overlay) {
@@ -195,13 +234,11 @@
     });
   });
 
-  // Tap hover fix (all cards)
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('touchstart', () => {
-      card.classList.add('active-tap');
-    });
-    card.addEventListener('touchend', () => {
-      setTimeout(() => card.classList.remove('active-tap'), 200);
+  // Close popup when clicking close button
+  document.querySelectorAll('.close-btn[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const popupId = btn.getAttribute('data-close');
+      document.getElementById(popupId).style.display = 'none';
     });
   });
 </script>
@@ -306,14 +343,14 @@
   <div class="category-container">
     <button id="weatherBtn" class="category-btn"><i class="fas fa-cloud-sun"></i> Live Weather</button>
     <button id="calendarBtn" class="category-btn"><i class="fas fa-calendar-alt"></i> Calendar</button>
-	<button class="category-btn" onclick="openMap('nearest bus stand','Bus Stands')"><i class="fas fa-bus"></i> Bus Stand</button>
-	<button class="category-btn" onclick="openMap('nearest indian railway station','Railway Station')"><i class="fas fa-train"></i> Railway Stations</button>
+	<button class="category-btn" data-url="https://www.google.com/maps/search/nearest+bus+stand/"><i class="fas fa-bus"></i> Bus Stand</button>
+	<button class="category-btn" data-url="https://www.google.com/maps/search/nearest+railway+station/"><i class="fas fa-train"></i> Railway Stations</button>
 	<button class="category-btn" onclick="openAirportOptions()"><i class="fas fa-plane-departure"></i> Airport</button>
     <button class="category-btn" onclick="window.location.href='kochi_metro_with_time.html'"><i class="fas fa-subway"></i> Metro</button>
     <button class="category-btn" onclick="window.location.href='kochi_water_metro_with_time.html'"><i class="fas fa-ship"></i> Water Metro</button>
-    <button class="category-btn" onclick="openMap('nearest toll plaza','Toll Booth')"><i class="fas fa-road"></i> Toll Booth</button>
-    <button class="category-btn" onclick="openMap('nearest bike car rental','Ride & Rentals')"><i class="fas fa-car"></i> Ride & Rentals</button>
-	<button class="category-btn" onclick="openMap('nearest atm cdm','ATM & CDM')"><i class="fas fa-university"></i> ATM & CDM</button>
+    <button class="category-btn" data-url="https://www.google.com/maps/search/nearest+toll+plaza/"><i class="fas fa-road"></i> Toll Booth</button>
+    <button class="category-btn" data-url="https://www.google.com/maps/search/nearest+car+bike+rentals/"><i class="fas fa-car"></i> Ride & Rentals</button>
+	<button class="category-btn" data-url="https://www.google.com/maps/search/nearest+atm+cdm/"><i class="fas fa-university"></i> ATM & CDM</button>
     <button id="instagramBtn" class="category-btn"><i class="fas fa-pen-nib"></i> Blogs & Stories</button>
   </div>
 	
