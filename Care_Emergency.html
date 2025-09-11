@@ -41,6 +41,14 @@ html,body{margin:0;display:flex;flex-direction:column;height:100%;background:#ff
 .button-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin-bottom:20px;}
 .card{background:#fff;padding:15px;border-radius:12px;text-align:center;border:1px solid #ddd;cursor:pointer;transition:transform 0.2s ease;}
 .card:hover{transform:translateY(-4px);}
+.card:active {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+.card.active-tap {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
 .card img{width:40px;margin-bottom:8px;}
 .card p{margin:0;font-weight:bold;color:#333;font-size:15px;}
 
@@ -193,5 +201,17 @@ html,body{margin:0;display:flex;flex-direction:column;height:100%;background:#ff
     <button><i class="ri-phone-line"></i></button>
   </div>
 
+	<script>
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('touchstart', () => {
+      card.classList.add('active-tap');
+    });
+    card.addEventListener('touchend', () => {
+      setTimeout(() => card.classList.remove('active-tap'), 200);
+    });
+  });
+</script>
+
 </body>
 </html>
+
