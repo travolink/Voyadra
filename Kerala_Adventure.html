@@ -3,15 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Voyadra | Kerala Adventure</title>
+<title>Voyadra | Kerala Mountains</title>
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Nunito', sans-serif; }
-html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep overscroll prevention */
-.page-content { height:100%; width:100%; overflow-y:auto; padding:10px; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+  height: 100%;
+  overflow-y: auto;   /* ✅ allow scrolling */
+}
+
+.page-content {
+  padding: 10px;
+  /* Remove height:100% and overflow here */
+  padding-bottom: 70px; /* keep space for bottom nav on mobile */
+}
 
 /* Navbar */
 .navbar { display:flex; justify-content:space-between; align-items:center; padding:15px 100px; background:#fff; position:fixed; top:0; left:0; width:100%; z-index:1000; }
@@ -54,12 +65,12 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
 
 /* Cards */
 .cards-container { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:15px; margin-top:30px; }
-.adventure-card { border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.15); position:relative; height:220px; }
-.adventure-card img { width:100%; height:100%; object-fit:cover; display:block; }
-.adventure-info { position:absolute; bottom:0; left:0; right:0; padding:10px; background:rgba(0,0,0,0.3); color:#fff; }
-.adventure-info h3 { font-size:16px; font-weight:bold; margin-bottom:4px; }
-.adventure-info p { font-size:13px; margin:0; }
-.adventure-info a { font-size:13px; color:#ff8c1a; font-weight:bold; text-decoration:none; margin-top:4px; display:inline-block; }
+.beach-card { border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.15); position:relative; height:220px; }
+.beach-card img { width:100%; height:100%; object-fit:cover; display:block; }
+.beach-info { position:absolute; bottom:0; left:0; right:0; padding:10px; background:rgba(0,0,0,0.3); color:#fff; }
+.beach-info h3 { font-size:16px; font-weight:bold; margin-bottom:4px; }
+.beach-info p { font-size:13px; margin:0; }
+.beach-info a { font-size:13px; color:#ff8c1a; font-weight:bold; text-decoration:none; margin-top:4px; display:inline-block; }
 
 /* Filter bar desktop */
 .filter-bar { display:flex; gap:15px; margin-top:40px; }
@@ -103,14 +114,6 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
 .filter-popup .popup-content h3 { text-align:center; margin-bottom:8px; font-size:18px; }
 .filter-popup .close-btn { position:absolute; top:8px; right:8px; font-size:20px; cursor:pointer; color:#333; }
 
-/* Popup options scrolling fix */
-.filter-popup .popup-content .options {
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-}
-
 /* Media queries */
 @media (max-width:900px){
   .nav-links, .icons { display:none; }
@@ -144,10 +147,10 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
 
   <!-- Hero -->
   <div class="hero">
-    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="active" alt="Adventure 1">
-    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Adventure 2">
-    <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Adventure 3">
-    <div class="hero-text" id="heroText">Explore the Beautiful Adventures of Kerala</div>
+    <img src="img/Kalyanathandu Hills.jpg" class="active" alt="Beach 1">
+    <img src="img/Meesapulimala.jpg" alt="Beach 2">
+    <img src="img/Thrissanku Hills.jpg" alt="Beach 3">
+    <div class="hero-text" id="heroText">Explore the Beautiful Beaches of Kerala</div>
   </div>
 
   <!-- Desktop Filter -->
@@ -165,12 +168,20 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
       <div class="selected"><span>All Districts</span> <i class="fas fa-chevron-down"></i></div>
       <div class="options">
         <div data-value="all">All Districts</div>
-        <div data-value="Kasargod">Kasargod</div>
-        <div data-value="Kannur">Kannur</div>
+		<div data-value="Alappuzha">Alappuzha</div>
+		<div data-value="Ernakulam">Ernakulam</div>
+		<div data-value="Idukki">Idukki</div>
+		<div data-value="Kannur">Kannur</div>
+        <div data-value="Kasaragod">Kasaragod</div>
+        <div data-value="Kollam">Kollam</div>
+		<div data-value="Kottayam">Kottayam</div>
         <div data-value="Kozhikode">Kozhikode</div>
-        <div data-value="Alappuzha">Alappuzha</div>
-        <div data-value="Ernakulam">Ernakulam</div>
+        <div data-value="Malappuram">Malappuram</div>
+        <div data-value="Palakkad">Palakkad</div>
+		<div data-value="Pathanamthitta">Pathanamthitta</div>
         <div data-value="Thiruvananthapuram">Thiruvananthapuram</div>
+		<div data-value="Thrissur">Thrissur</div>
+		<div data-value="Wayanad">Wayanad</div>
       </div>
     </div>
   </div>
@@ -185,7 +196,7 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
   <div class="filter-popup" id="filterPopup">
     <div class="popup-content">
       <span class="close-btn" id="closePopup">&times;</span>
-      <h3>Filter Adventures</h3>
+      <h3>Filter Beaches</h3>
       <div class="custom-select" id="popupRegionSelect">
         <div class="selected"><span>All Regions</span> <i class="fas fa-chevron-down"></i></div>
         <div class="options">
@@ -199,45 +210,156 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
         <div class="selected"><span>All Districts</span> <i class="fas fa-chevron-down"></i></div>
         <div class="options">
           <div data-value="all">All Districts</div>
-          <div data-value="Kasargod">Kasargod</div>
-          <div data-value="Kannur">Kannur</div>
-          <div data-value="Kozhikode">Kozhikode</div>
           <div data-value="Alappuzha">Alappuzha</div>
-          <div data-value="Ernakulam">Ernakulam</div>
+		  <div data-value="Ernakulam">Ernakulam</div>
+		  <div data-value="Idukki">Idukki</div>
+		  <div data-value="Kannur">Kannur</div>
+          <div data-value="Kasargod">Kasargod</div>
+          <div data-value="Kollam">Kollam</div>
+		  <div data-value="Kottayam">Kottayam</div>
+          <div data-value="Kozhikode">Kozhikode</div>
+          <div data-value="Malappuram">Malappuram</div>
+          <div data-value="Palakkad">Palakkad</div>
+		  <div data-value="Pathanamthitta">Pathanamthitta</div>
           <div data-value="Thiruvananthapuram">Thiruvananthapuram</div>
-        </div>
+		  <div data-value="Thrissur">Thrissur</div>
+		  <div data-value="Wayanad">Wayanad</div>
+         </div>
       </div>
     </div>
   </div>
 
   <!-- Cards -->
   <div class="cards-container" id="cardsContainer">
-    <div class="adventure-card" data-region="North" data-district="Kasargod">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Bekal Adventure">
-      <div class="adventure-info"><h3>Bekal Adventure</h3><p>Kasargod, North Kerala</p><a href="#">Get Directions</a></div>
+    <div class="beach-card" data-region="North" data-district="Wayanad">
+      <img src="img/chembra peak.jpg" alt="chembra peak">
+      <div class="beach-info"><h3>Chembra Peak</h3><p>Wayanad</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="adventure-card" data-region="North" data-district="Kannur">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Payyambalam Adventure">
-      <div class="adventure-info"><h3>Payyambalam Adventure</h3><p>Kannur, North Kerala</p><a href="#">Get Directions</a></div>
+	<div class="beach-card" data-region="North" data-district="Kottayam">
+      <img src="img/Illikkal Kallu.jpg" alt="Illikkal Kallu">
+      <div class="beach-info"><h3>Illikkal Kallu</h3><p>Kottayam</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="adventure-card" data-region="Central" data-district="Alappuzha">
-      <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Alappuzha Adventure">
-      <div class="adventure-info"><h3>Alappuzha Adventure</h3><p>Alappuzha, Central Kerala</p><a href="#">Get Directions</a></div>
+	<div class="beach-card" data-region="North" data-district="Wayanad">
+      <img src="img/banasura-sagar-dam.jpg" alt="Banasura Hill">
+      <div class="beach-info"><h3>Banasura Hill</h3><p>Wayanad</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="adventure-card" data-region="Central" data-district="Ernakulam">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Cherai Adventure">
-      <div class="adventure-info"><h3>Cherai Adventure</h3><p>Ernakulam, Central Kerala</p><a href="#">Get Directions</a></div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Meesapulimala.jpg" alt="Meesapulimala">
+      <div class="beach-info"><h3>Meesapulimala</h3><p>Idukki</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="adventure-card" data-region="South" data-district="Thiruvananthapuram">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Varkala Adventure">
-      <div class="adventure-info"><h3>Varkala Adventure</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/anamudi-peak.jpg" alt="Anamudi Peak">
+      <div class="beach-info"><h3>Anamudi Peak</h3><p>Idukki</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="adventure-card" data-region="South" data-district="Thiruvananthapuram">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Kovalam Adventure">
-      <div class="adventure-info"><h3>Kovalam Adventure</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Kalvari Mount.jpg" alt="Kalvari Mount">
+      <div class="beach-info"><h3>Kalvari Mount</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Thiruvananthapuram">
+      <img src="img/Agastya Mala.jpg" alt="Agastya Mala">
+      <div class="beach-info"><h3>Agastya Mala</h3><p>Thiruvananthapuram</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Barren Hills.jpg" alt="Barren Hills">
+      <div class="beach-info"><h3>Agastya Mala</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kannur">
+      <img src="img/Palakkayam Thattu.jpg" alt="Palakkayam Thattu">
+      <div class="beach-info"><h3>Palakkayam Thattu</h3><p>Kannur</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kottayam">
+      <img src="img/Ilaveezhapoonchira.jpg" alt="Ilaveezhapoonchira">
+      <div class="beach-info"><h3>Ilaveezhapoonchira</h3><p>Kottayam</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Palakkad">
+      <img src="img/Nelliyampathy Hills.jpg" alt="Nelliyampathy Hills">
+      <div class="beach-info"><h3>Nelliyampathy Hills</h3><p>Palakkad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Chokramudi Peak.jpg" alt="Chokramudi Peak">
+      <div class="beach-info"><h3>Chokramudi Peak</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kozhikode">
+      <img src="img/Vellari Mala.jpg" alt="Vellari Mala">
+      <div class="beach-info"><h3>Vellari Mala</h3><p>Kozhikode</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Thangal Hill.jpg" alt="Thangal Hill">
+      <div class="beach-info"><h3>Thangal Hill</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kozhikode">
+      <img src="img/Vayalada View Point.jpg" alt="Vayalada View Point">
+      <div class="beach-info"><h3>Vayalada View Point</h3><p>Kozhikode</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Palakkad">
+      <img src="img/Attappadi Hills.jpg" alt="Attappadi Hills">
+      <div class="beach-info"><h3>Attappadi Hills</h3><p>Palakkad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Wayanad">
+      <img src="img/Kurumbalakotta.jpg" alt="Kurumbalakotta">
+      <div class="beach-info"><h3>Kurumbalakotta</h3><p>Wayanad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Kalyanathandu Hills.jpg" alt="Kalyanathandu Hills">
+      <div class="beach-info"><h3>Kalyanathandu Hills</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Ottakathala Medu Mountain Range.jpg" alt="Ottakathala Medu Mountain Range">
+      <div class="beach-info"><h3>Ottakathala Medu</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Urumbikkara.jpg" alt="Urumbikkara">
+      <div class="beach-info"><h3>Urumbikkara</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Swiftlet Cave.jpg" alt="Swiftlet Cave">
+      <div class="beach-info"><h3>Swiftlet Cave</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Kailasappara View Point.jpg" alt="Kailasappara View Point">
+      <div class="beach-info"><h3>Kailasappara View Point</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Meenuliyan Para.jpg" alt="Meenuliyan Para">
+      <div class="beach-info"><h3>Meenuliyan Para</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kannur">
+      <img src="img/Kappimala.jpg" alt="Kappimala">
+      <div class="beach-info"><h3>Kappimala</h3><p>Kannur</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Thrissanku Hills.jpg" alt="Thrissanku Hills">
+      <div class="beach-info"><h3>Thrissanku Hills</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Kottayam">
+      <img src="img/Kannadipara.jpg" alt="Kannadipara">
+      <div class="beach-info"><h3>Kannadipara</h3><p>Kottayam</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Palakkad">
+      <img src="img/Raja's Cliff (Mampara Peak).jpg" alt="Raja's Cliff (Mampara Peak)">
+      <div class="beach-info"><h3>Raja's Cliff (Mampara Peak)</h3><p>Palakkad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Wayanad">
+      <img src="img/Vellari Mala.jpg" alt="Vellari Mala">
+      <div class="beach-info"><h3>Vellari Mala</h3><p>Wayanad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Malappuram">
+      <img src="img/Elembalai Hill.jpeg" alt="Elembalai Hill">
+      <div class="beach-info"><h3>Elembalai Hill</h3><p>Malappuram</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Wayanad">
+      <img src="img/Mayiladi Para.jpeg" alt="Mayiladi Para">
+      <div class="beach-info"><h3>Mayiladi Para</h3><p>Wayanad</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Hornbill Paradise.jpeg" alt="Hornbill Paradise">
+      <div class="beach-info"><h3>Hornbill Paradise</h3><p>Idukki</p><a href="#">Get Directions</a></div>
+    </div>
+	<div class="beach-card" data-region="North" data-district="Idukki">
+      <img src="img/Panchalimedu.jpeg" alt="Panchalimedu">
+      <div class="beach-info"><h3>Panchalimedu</h3><p>Idukki</p><a href="#">Get Directions</a></div>
     </div>
   </div>
-
 </div>
 
 <!-- Bottom nav -->
@@ -245,7 +367,7 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
   <button><i class="ri-home-5-fill"></i></button>
   <button><i class="ri-search-2-line"></i></button>
   <button><i class="ri-map-pin-line"></i></button>
-  <button><i class="ri-image-line"></i></button>
+  <button onclick="window.open('https://www.instagram.com/voyadra/', '_blank')"><i class="ri-image-line"></i></button>
   <button><i class="ri-phone-line"></i></button>
 </div>
 
@@ -254,7 +376,7 @@ html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep o
 const heroImages = document.querySelectorAll('.hero img');
 const heroText = document.getElementById('heroText');
 const texts = [
-  "Explore the Beautiful Adventures of Kerala",
+  "Explore the Beautiful Beaches of Kerala",
   "Relax at Pristine Shores",
   "Discover Hidden Gems by the Sea"
 ];
@@ -268,7 +390,7 @@ setInterval(() => {
 
 // Filter cards
 function filterCards(regionValue, districtValue){
-  document.querySelectorAll('.adventure-card').forEach(card=>{
+  document.querySelectorAll('.beach-card').forEach(card=>{
     const matchRegion = regionValue==='all' || card.dataset.region===regionValue;
     const matchDistrict = districtValue==='all' || card.dataset.district===districtValue;
     card.style.display = (matchRegion && matchDistrict)?'block':'none';
@@ -276,20 +398,13 @@ function filterCards(regionValue, districtValue){
 }
 
 // Custom dropdown
-function setupCustomSelect(id, callback){
+function setupCustomSelect(id, callback, popupClose = false){
   const container=document.getElementById(id);
   const selected=container.querySelector('.selected');
   const optionsContainer=container.querySelector('.options');
   const options=optionsContainer.querySelectorAll('div');
 
-  selected.addEventListener('click',()=>{
-    // Close other dropdowns before opening this one
-    document.querySelectorAll('.custom-select').forEach(sel=>{
-      if(sel!==container){ sel.classList.remove('open'); }
-    });
-    container.classList.toggle('open');
-  });
-
+  selected.addEventListener('click',()=>container.classList.toggle('open'));
   options.forEach(opt=>{
     opt.addEventListener('click',()=>{
       selected.querySelector('span').innerText=opt.innerText;
@@ -297,9 +412,9 @@ function setupCustomSelect(id, callback){
       container.classList.remove('open');
       callback(opt.dataset.value);
 
-      // Auto close popup when option is selected
-      if(container.closest('#filterPopup')){
-        document.getElementById('filterPopup').style.display='none';
+      // ✅ Close popup if inside popup filter
+      if (popupClose) {
+        document.getElementById('filterPopup').style.display = 'none';
       }
     });
   });
@@ -309,13 +424,20 @@ function setupCustomSelect(id, callback){
 const regionSelect=document.getElementById('regionSelect');
 const districtSelect=document.getElementById('districtSelect');
 setupCustomSelect('regionSelect',val=>filterCards(val,districtSelect.dataset.value||'all'));
-setupCustomSelect('districtSelect',val=>filterCards(regionSelect.dataset.value||'all',val));
+setupCustomSelect('districtSelect',val=>{
+  // ✅ When selecting district, close region dropdown
+  regionSelect.classList.remove('open');
+  filterCards(regionSelect.dataset.value||'all',val);
+});
 
 // Popup selects
 const popupRegion=document.getElementById('popupRegionSelect');
 const popupDistrict=document.getElementById('popupDistrictSelect');
-setupCustomSelect('popupRegionSelect',val=>filterCards(val,popupDistrict.dataset.value||'all'));
-setupCustomSelect('popupDistrictSelect',val=>filterCards(popupRegion.dataset.value||'all',val));
+setupCustomSelect('popupRegionSelect',val=>filterCards(val,popupDistrict.dataset.value||'all'), true);
+setupCustomSelect('popupDistrictSelect',val=>{
+  popupRegion.classList.remove('open'); // ✅ close region when selecting district
+  filterCards(popupRegion.dataset.value||'all',val);
+}, true);
 
 // Popup open/close only on "Filter" text
 const filterText = document.getElementById('filterText');
@@ -330,73 +452,7 @@ filterPopup.addEventListener('click',e=>{if(e.target===filterPopup)filterPopup.s
 
 // Hide popup if resized to desktop
 window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style.display='none';});
-
-// --------------------------
-// Robust WebView scrolling fix
-// - Attach edge-protection to each .options inside popup
-// - Global guard prevents pull-to-refresh only when touch started outside .options
-// --------------------------
-(function(){
-  // page scroll container
-  const scrollEl = document.querySelector('.page-content') || document.scrollingElement || document.documentElement;
-
-  // GLOBAL touchstart -> know if the gesture started inside an .options element
-  let globalStartY = 0;
-  let startedInsideOptions = false;
-
-  document.addEventListener('touchstart', function(e){
-    if(!e.touches || e.touches.length !== 1) return;
-    globalStartY = e.touches[0].clientY;
-    startedInsideOptions = !!(e.target && e.target.closest && e.target.closest('.filter-popup .options'));
-  }, { passive: true });
-
-  // Global touchmove: only prevent when gesture started outside options AND page is at top and pulling down
-  document.addEventListener('touchmove', function(e){
-    if(!e.touches || e.touches.length !== 1) return;
-    if (startedInsideOptions) return; // let options handle their own scroll
-    const touchY = e.touches[0].clientY;
-    const atTop = scrollEl && (scrollEl.scrollTop === 0);
-    if (atTop && touchY > globalStartY) {
-      // prevent pull-to-refresh only
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // For each popup options element attach edge-handlers to stop scroll chaining/bounce
-  const optionEls = document.querySelectorAll('.filter-popup .options');
-  optionEls.forEach(optEl => {
-    if (optEl._edgeHandlersAttached) return;
-    let startY = 0;
-
-    optEl.addEventListener('touchstart', function(e){
-      if(!e.touches || e.touches.length !== 1) return;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    optEl.addEventListener('touchmove', function(e){
-      if(!e.touches || e.touches.length !== 1) return;
-      const currentY = e.touches[0].clientY;
-      const diff = currentY - startY;
-
-      // If at very top of options and pulling down -> prevent default to stop parent refresh
-      if (optEl.scrollTop === 0 && diff > 0) {
-        e.preventDefault();
-        return;
-      }
-
-      // If at very bottom of options and pulling up beyond bottom -> prevent default
-      const scrollBottom = optEl.scrollHeight - optEl.scrollTop - optEl.clientHeight;
-      if (scrollBottom <= 0 && diff < 0) {
-        e.preventDefault();
-        return;
-      }
-
-      // otherwise allow normal scroll inside options
-    }, { passive: false });
-
-    optEl._edgeHandlersAttached = true;
-  });
-})();
 </script>
+
 </body>
 </html>
