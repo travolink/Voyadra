@@ -10,7 +10,7 @@
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Nunito', sans-serif; }
-html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* added overscroll fix */
+html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* keep overscroll prevention */
 .page-content { height:100%; width:100%; overflow-y:auto; padding:10px; }
 
 /* Navbar */
@@ -283,7 +283,7 @@ function setupCustomSelect(id, callback){
   const options=optionsContainer.querySelectorAll('div');
 
   selected.addEventListener('click',()=>{
-    // close other dropdowns before opening
+    // Close other dropdowns before opening this one
     document.querySelectorAll('.custom-select').forEach(sel=>{
       if(sel!==container){ sel.classList.remove('open'); }
     });
@@ -296,7 +296,8 @@ function setupCustomSelect(id, callback){
       container.dataset.value=opt.dataset.value;
       container.classList.remove('open');
       callback(opt.dataset.value);
-      // close popup automatically if inside popup
+
+      // Auto close popup when option is selected
       if(container.closest('#filterPopup')){
         document.getElementById('filterPopup').style.display='none';
       }
@@ -330,28 +331,71 @@ filterPopup.addEventListener('click',e=>{if(e.target===filterPopup)filterPopup.s
 // Hide popup if resized to desktop
 window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style.display='none';});
 
-// ---------- Scroll fix for WebView pull-to-refresh ----------
+// --------------------------
+// Robust WebView scrolling fix
+// - Attach edge-protection to each .options inside popup
+// - Global guard prevents pull-to-refresh only when touch started outside .options
+// --------------------------
 (function(){
+  // page scroll container
   const scrollEl = document.querySelector('.page-content') || document.scrollingElement || document.documentElement;
-  let startY = 0;
 
-  document.addEventListener('touchstart', function (e) {
-    if (e.touches && e.touches.length === 1) startY = e.touches[0].clientY;
+  // GLOBAL touchstart -> know if the gesture started inside an .options element
+  let globalStartY = 0;
+  let startedInsideOptions = false;
+
+  document.addEventListener('touchstart', function(e){
+    if(!e.touches || e.touches.length !== 1) return;
+    globalStartY = e.touches[0].clientY;
+    startedInsideOptions = !!(e.target && e.target.closest && e.target.closest('.filter-popup .options'));
   }, { passive: true });
 
-  document.addEventListener('touchmove', function (e) {
-    if (!e.touches || e.touches.length !== 1) return;
+  // Global touchmove: only prevent when gesture started outside options AND page is at top and pulling down
+  document.addEventListener('touchmove', function(e){
+    if(!e.touches || e.touches.length !== 1) return;
+    if (startedInsideOptions) return; // let options handle their own scroll
     const touchY = e.touches[0].clientY;
-
-    // Allow scroll inside popup options
-    const insideOptions = e.target.closest && e.target.closest('.options');
-    if (insideOptions) return;
-
     const atTop = scrollEl && (scrollEl.scrollTop === 0);
-    if (atTop && touchY > startY) {
-      e.preventDefault(); // block pull-to-refresh
+    if (atTop && touchY > globalStartY) {
+      // prevent pull-to-refresh only
+      e.preventDefault();
     }
   }, { passive: false });
+
+  // For each popup options element attach edge-handlers to stop scroll chaining/bounce
+  const optionEls = document.querySelectorAll('.filter-popup .options');
+  optionEls.forEach(optEl => {
+    if (optEl._edgeHandlersAttached) return;
+    let startY = 0;
+
+    optEl.addEventListener('touchstart', function(e){
+      if(!e.touches || e.touches.length !== 1) return;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    optEl.addEventListener('touchmove', function(e){
+      if(!e.touches || e.touches.length !== 1) return;
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - startY;
+
+      // If at very top of options and pulling down -> prevent default to stop parent refresh
+      if (optEl.scrollTop === 0 && diff > 0) {
+        e.preventDefault();
+        return;
+      }
+
+      // If at very bottom of options and pulling up beyond bottom -> prevent default
+      const scrollBottom = optEl.scrollHeight - optEl.scrollTop - optEl.clientHeight;
+      if (scrollBottom <= 0 && diff < 0) {
+        e.preventDefault();
+        return;
+      }
+
+      // otherwise allow normal scroll inside options
+    }, { passive: false });
+
+    optEl._edgeHandlersAttached = true;
+  });
 })();
 </script>
 </body>
