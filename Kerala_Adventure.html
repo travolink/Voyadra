@@ -10,11 +10,7 @@
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Nunito', sans-serif; }
-html, body { 
-  height:100%; 
-  overflow:hidden; 
-  overscroll-behavior: none; /* 🔹 prevent pull-to-refresh in WebView */
-}
+html, body { height:100%; overflow:hidden; overscroll-behavior:none; } /* added overscroll fix */
 .page-content { height:100%; width:100%; overflow-y:auto; padding:10px; }
 
 /* Navbar */
@@ -38,7 +34,7 @@ html, body {
 .hero img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; opacity:0; transition:opacity 1s ease; }
 .hero img.active { opacity:1; }
 
-/* Hero text overlay */
+/* Hero text overlay - bottom left without background */
 .hero-text {
   position: absolute;
   bottom: 20px;
@@ -58,12 +54,12 @@ html, body {
 
 /* Cards */
 .cards-container { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:15px; margin-top:30px; }
-.beach-card { border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.15); position:relative; height:220px; }
-.beach-card img { width:100%; height:100%; object-fit:cover; display:block; }
-.beach-info { position:absolute; bottom:0; left:0; right:0; padding:10px; background:rgba(0,0,0,0.3); color:#fff; }
-.beach-info h3 { font-size:16px; font-weight:bold; margin-bottom:4px; }
-.beach-info p { font-size:13px; margin:0; }
-.beach-info a { font-size:13px; color:#ff8c1a; font-weight:bold; text-decoration:none; margin-top:4px; display:inline-block; }
+.adventure-card { border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.15); position:relative; height:220px; }
+.adventure-card img { width:100%; height:100%; object-fit:cover; display:block; }
+.adventure-info { position:absolute; bottom:0; left:0; right:0; padding:10px; background:rgba(0,0,0,0.3); color:#fff; }
+.adventure-info h3 { font-size:16px; font-weight:bold; margin-bottom:4px; }
+.adventure-info p { font-size:13px; margin:0; }
+.adventure-info a { font-size:13px; color:#ff8c1a; font-weight:bold; text-decoration:none; margin-top:4px; display:inline-block; }
 
 /* Filter bar desktop */
 .filter-bar { display:flex; gap:15px; margin-top:40px; }
@@ -72,22 +68,7 @@ html, body {
 .custom-select .selected span { pointer-events:none; }
 .custom-select .selected i { transition:0.3s; }
 .custom-select.open .selected i { transform:rotate(180deg); }
-.custom-select .options { 
-  display:none; 
-  position:absolute; 
-  top:100%; 
-  left:0; 
-  right:0; 
-  border:2px solid #ffa500; 
-  border-top:none; 
-  border-radius:0 0 8px 8px; 
-  background:#fff; 
-  max-height:180px; 
-  overflow-y:auto; 
-  z-index:100; 
-  overscroll-behavior: contain; /* 🔹 prevent refresh on scroll */
-  -webkit-overflow-scrolling: touch;
-}
+.custom-select .options { display:none; position:absolute; top:100%; left:0; right:0; border:2px solid #ffa500; border-top:none; border-radius:0 0 8px 8px; background:#fff; max-height:180px; overflow-y:auto; z-index:100; }
 .custom-select .options div { padding:8px 10px; transition:0.2s; font-size:14px; }
 .custom-select .options div:hover { background:#ffa500; color:#fff; }
 .custom-select.open .options { display:block; }
@@ -122,6 +103,14 @@ html, body {
 .filter-popup .popup-content h3 { text-align:center; margin-bottom:8px; font-size:18px; }
 .filter-popup .close-btn { position:absolute; top:8px; right:8px; font-size:20px; cursor:pointer; color:#333; }
 
+/* Popup options scrolling fix */
+.filter-popup .popup-content .options {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
 /* Media queries */
 @media (max-width:900px){
   .nav-links, .icons { display:none; }
@@ -155,10 +144,10 @@ html, body {
 
   <!-- Hero -->
   <div class="hero">
-    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="active" alt="Beach 1">
-    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Beach 2">
-    <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Beach 3">
-    <div class="hero-text" id="heroText">Explore the Beautiful Beaches of Kerala</div>
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="active" alt="Adventure 1">
+    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Adventure 2">
+    <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Adventure 3">
+    <div class="hero-text" id="heroText">Explore the Beautiful Adventures of Kerala</div>
   </div>
 
   <!-- Desktop Filter -->
@@ -196,7 +185,7 @@ html, body {
   <div class="filter-popup" id="filterPopup">
     <div class="popup-content">
       <span class="close-btn" id="closePopup">&times;</span>
-      <h3>Filter Beaches</h3>
+      <h3>Filter Adventures</h3>
       <div class="custom-select" id="popupRegionSelect">
         <div class="selected"><span>All Regions</span> <i class="fas fa-chevron-down"></i></div>
         <div class="options">
@@ -223,29 +212,29 @@ html, body {
 
   <!-- Cards -->
   <div class="cards-container" id="cardsContainer">
-    <div class="beach-card" data-region="North" data-district="Kasargod">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Bekal Beach">
-      <div class="beach-info"><h3>Bekal Beach</h3><p>Kasargod, North Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="North" data-district="Kasargod">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Bekal Adventure">
+      <div class="adventure-info"><h3>Bekal Adventure</h3><p>Kasargod, North Kerala</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="beach-card" data-region="North" data-district="Kannur">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Payyambalam Beach">
-      <div class="beach-info"><h3>Payyambalam Beach</h3><p>Kannur, North Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="North" data-district="Kannur">
+      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Payyambalam Adventure">
+      <div class="adventure-info"><h3>Payyambalam Adventure</h3><p>Kannur, North Kerala</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="beach-card" data-region="Central" data-district="Alappuzha">
-      <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Alappuzha Beach">
-      <div class="beach-info"><h3>Alappuzha Beach</h3><p>Alappuzha, Central Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="Central" data-district="Alappuzha">
+      <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c" alt="Alappuzha Adventure">
+      <div class="adventure-info"><h3>Alappuzha Adventure</h3><p>Alappuzha, Central Kerala</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="beach-card" data-region="Central" data-district="Ernakulam">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Cherai Beach">
-      <div class="beach-info"><h3>Cherai Beach</h3><p>Ernakulam, Central Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="Central" data-district="Ernakulam">
+      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Cherai Adventure">
+      <div class="adventure-info"><h3>Cherai Adventure</h3><p>Ernakulam, Central Kerala</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="beach-card" data-region="South" data-district="Thiruvananthapuram">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Varkala Beach">
-      <div class="beach-info"><h3>Varkala Beach</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="South" data-district="Thiruvananthapuram">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Varkala Adventure">
+      <div class="adventure-info"><h3>Varkala Adventure</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
     </div>
-    <div class="beach-card" data-region="South" data-district="Thiruvananthapuram">
-      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Kovalam Beach">
-      <div class="beach-info"><h3>Kovalam Beach</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
+    <div class="adventure-card" data-region="South" data-district="Thiruvananthapuram">
+      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Kovalam Adventure">
+      <div class="adventure-info"><h3>Kovalam Adventure</h3><p>Thiruvananthapuram, South Kerala</p><a href="#">Get Directions</a></div>
     </div>
   </div>
 
@@ -265,7 +254,7 @@ html, body {
 const heroImages = document.querySelectorAll('.hero img');
 const heroText = document.getElementById('heroText');
 const texts = [
-  "Explore the Beautiful Beaches of Kerala",
+  "Explore the Beautiful Adventures of Kerala",
   "Relax at Pristine Shores",
   "Discover Hidden Gems by the Sea"
 ];
@@ -279,7 +268,7 @@ setInterval(() => {
 
 // Filter cards
 function filterCards(regionValue, districtValue){
-  document.querySelectorAll('.beach-card').forEach(card=>{
+  document.querySelectorAll('.adventure-card').forEach(card=>{
     const matchRegion = regionValue==='all' || card.dataset.region===regionValue;
     const matchDistrict = districtValue==='all' || card.dataset.district===districtValue;
     card.style.display = (matchRegion && matchDistrict)?'block':'none';
@@ -294,12 +283,10 @@ function setupCustomSelect(id, callback){
   const options=optionsContainer.querySelectorAll('div');
 
   selected.addEventListener('click',()=>{
-    // close other selects in popup
-    if(container.closest('.filter-popup')){
-      document.querySelectorAll('.filter-popup .custom-select').forEach(sel=>{
-        if(sel!==container){ sel.classList.remove('open'); }
-      });
-    }
+    // close other dropdowns before opening
+    document.querySelectorAll('.custom-select').forEach(sel=>{
+      if(sel!==container){ sel.classList.remove('open'); }
+    });
     container.classList.toggle('open');
   });
 
@@ -309,8 +296,9 @@ function setupCustomSelect(id, callback){
       container.dataset.value=opt.dataset.value;
       container.classList.remove('open');
       callback(opt.dataset.value);
-      if(container.closest('.filter-popup')){
-        filterPopup.style.display = 'none';
+      // close popup automatically if inside popup
+      if(container.closest('#filterPopup')){
+        document.getElementById('filterPopup').style.display='none';
       }
     });
   });
@@ -328,21 +316,43 @@ const popupDistrict=document.getElementById('popupDistrictSelect');
 setupCustomSelect('popupRegionSelect',val=>filterCards(val,popupDistrict.dataset.value||'all'));
 setupCustomSelect('popupDistrictSelect',val=>filterCards(popupRegion.dataset.value||'all',val));
 
-// Popup open/close
+// Popup open/close only on "Filter" text
 const filterText = document.getElementById('filterText');
 const filterPopup = document.getElementById('filterPopup');
 const closePopup = document.getElementById('closePopup');
-filterText.addEventListener('click', () => filterPopup.style.display = 'flex');
+
+filterText.addEventListener('click', () => {
+  filterPopup.style.display = 'flex';
+});
 closePopup.addEventListener('click',()=>filterPopup.style.display='none');
 filterPopup.addEventListener('click',e=>{if(e.target===filterPopup)filterPopup.style.display='none';});
+
+// Hide popup if resized to desktop
 window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style.display='none';});
 
-// 🔹 Prevent WebView pull-to-refresh
-document.body.addEventListener('touchmove', function(e) {
-  if (document.body.scrollTop === 0) {
-    e.preventDefault();
-  }
-}, { passive: false });
+// ---------- Scroll fix for WebView pull-to-refresh ----------
+(function(){
+  const scrollEl = document.querySelector('.page-content') || document.scrollingElement || document.documentElement;
+  let startY = 0;
+
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches && e.touches.length === 1) startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function (e) {
+    if (!e.touches || e.touches.length !== 1) return;
+    const touchY = e.touches[0].clientY;
+
+    // Allow scroll inside popup options
+    const insideOptions = e.target.closest && e.target.closest('.options');
+    if (insideOptions) return;
+
+    const atTop = scrollEl && (scrollEl.scrollTop === 0);
+    if (atTop && touchY > startY) {
+      e.preventDefault(); // block pull-to-refresh
+    }
+  }, { passive: false });
+})();
 </script>
 </body>
 </html>
