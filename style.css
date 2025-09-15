@@ -60,14 +60,18 @@ html, body {
   cursor: pointer;
 }
 
-/* Hero Section */
+
+
+
+
+
+
+
+
+/* ? Updated Hero Section */
 .hero {
   margin: 80px 20px 40px 20px;
   height: 70vh;
-  background: url("h4.jpg") no-repeat center center/cover;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
   position: relative;
   border-radius: 15px;
   overflow: hidden;
@@ -75,24 +79,104 @@ html, body {
   text-align: left;
   padding: 0 50px 50px 50px;
 }
-.hero::after {
-  content: "";
+
+.hero-swiper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
 }
+
+.hero-swiper .swiper-slide {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .hero-content {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  z-index: 2;
   max-width: 600px;
 }
+
 .hero-content h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
 }
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+}
+
+.swiper-pagination {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: 50vh;
+    padding: 0 30px 30px 30px;
+  }
+  .hero-content {
+    bottom: 20px;
+    left: 30px;
+  }
+  .hero-content h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    height: 40vh;
+    padding: 0 20px 20px 20px;
+  }
+  .hero-content {
+    bottom: 15px;
+    left: 20px;
+  }
+  .hero-content h1 {
+    font-size: 22px;
+  }
+}
+
+/* ? Include all other styles from your original file unchanged below this section */
+
+/* Navbar, slider, cards, galleries, modals, etc. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Category Slider Section */
 .slider-wrapper {
@@ -206,15 +290,6 @@ html, body {
     display: flex;
   }
 
-  .hero {
-    height: 50vh;
-    padding: 0 30px 30px 30px;
-  }
-
-  .hero-content h1 {
-    font-size: 28px;
-  }
-
   .slider-wrapper {
     padding: 0 8px;
   }
@@ -241,18 +316,6 @@ html, body {
 }
 
 @media (max-width: 600px) {
-  .hero {
-    height: 40vh;
-    padding: 0 20px 20px 20px;
-  }
-
-  .hero-content h1 {
-    font-size: 22px;
-  }
-
-  .hero-content p {
-    font-size: 14px;
-  }
 
   .slider-wrapper {
     padding: 0 6px;
@@ -973,7 +1036,7 @@ td.sunday {
 }
 
 .popup-box button:hover {
-  background:#007b7f;            /* On hover → filled */
+  background:#007b7f;            /* On hover ? filled */
   color:#fff;
 }
 
