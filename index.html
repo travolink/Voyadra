@@ -30,12 +30,45 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Discover Destinations with the Power of Technology</h1>
+  <!-- ✅ Updated Hero Section -->
+<section class="hero">
+  <div class="swiper-container hero-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" style="background-image: url('hero1.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero6.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero5.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero9.jpg')"></div>
     </div>
-  </section>
+    <!-- Pagination removed -->
+  </div>
+  <div class="hero-content">
+    <h1>Discover Destinations with the Power of Technology</h1>
+  </div>
+  <div class="overlay"></div>
+</section>
+
+  <!-- ✅ All other content from your original file remains here unchanged -->
+  <!-- Category Section, popups, galleries, etc. -->
+
+  <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const heroSwiper = new Swiper('.hero-swiper', {
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    // Pagination is omitted as per your request
+  });
+
+  // Initialize other swiper instances separately, targeting their own container classes
+  const otherSwiper = new Swiper('.other-swiper', {
+    // Your other swiper config here
+  });
+</script>
+
+  <!-- ✅ All other scripts remain unchanged -->
 
   <!-- Category Section with wrapper -->
   <div class="slider-wrapper">
