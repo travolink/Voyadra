@@ -25,7 +25,7 @@
       <li>Gallery</li>
       <li>Contact</li>
     </ul>
-    <div class="icons">
+    <div class="icons" onclick="openSearchPopup()">
       <i class="fas fa-search"></i>
     </div>
   </nav>
@@ -34,10 +34,10 @@
 <section class="hero">
   <div class="swiper-container hero-swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image: url('img/hero1.jpg')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero6.JPG')"></div>
-      <div class="swiper-slide" style="background-image: url('img/hero7.png')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero9.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero1.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero6.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero7.png')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero9.jpg')"></div>
     </div>
     <!-- Pagination removed -->
   </div>
@@ -649,9 +649,7 @@
   <button class="scroll-btn" id="scrollRight">&#10095;</button>
 </div>
 	
-	
-	
-	<div class="gallery" data-district="all">
+	<div class="gallery" data-district="all" id="gallery">
 
 		
   <!-- Thiruvananthapuram -->
@@ -825,12 +823,182 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <button><i class="ri-home-5-fill"></i></button>
-    <button><i class="ri-search-2-line"></i></button>
+    <button><i class="ri-tent-line"></i></button>
+    <button onclick="openSearchPopup()"><i class="ri-search-eye-line"></i></button>
     <button><i class="ri-map-pin-line"></i></button>
-    <button><i class="ri-image-line"></i></button>
-    <button><i class="ri-phone-line"></i></button>
+    <button><i class="ri-instagram-line"></i></button>
+    <button><i class="ri-user-heart-line"></i></button>
   </div>
+	
+	
+	
+<!-- Search Popup -->
+<div id="searchPopup" class="search-popup">
+  <div class="search-popup-content">
+    <span class="close-btn" id="closeBtn">&times;</span>
+    <h2>Search Places</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Type place name..." />
+      <button onclick="startVoiceSearch()" title="Voice Search">🎙️</button>
+    </div>
+    <div id="noResults" style="display:none;">No places found</div>
+  </div>
+</div>
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const popup = document.getElementById("searchPopup");
+  const popupContent = popup.querySelector(".search-popup-content");
+  const searchInput = document.getElementById("searchInput");
+  const noResults = document.getElementById("noResults");
+  const gallery = document.getElementById("gallery");
+  const closeBtn = document.getElementById("closeBtn");
+  const filterWrapper = document.querySelector(".filter-wrapper");
+  const filterButtons = document.querySelectorAll(".filter-btn");
+
+  function normalize(str) {
+    return (str || "").toLowerCase().trim();
+  }
+
+  function getGalleryItems() {
+    return Array.from(gallery.querySelectorAll(".gallery-item"));
+  }
+
+  // Open / Close popup
+  function openSearchPopup() {
+    popup.style.display = "flex";
+    searchInput.value = "";
+    searchInput.focus();
+  }
+
+  function closeSearchPopup() {
+    popup.style.display = "none";
+  }
+
+  // Scroll filter section into view (CSS scroll-margin-top handles nav offset)
+  function scrollToFilter() {
+    if (!filterWrapper) return;
+    filterWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Search function
+  function searchPlaces() {
+    const q = normalize(searchInput.value);
+    const items = getGalleryItems();
+
+    let matched = [];
+    let others = [];
+
+    items.forEach(item => {
+      const placeName = normalize(item.querySelector(".place-name")?.innerText);
+      const altText = normalize(item.querySelector("img")?.alt);
+      const district = normalize(item.dataset.district);
+      const combined = `${placeName} ${altText} ${district} ${item.textContent}`;
+
+      if (!q || combined.includes(q)) matched.push(item);
+      else others.push(item);
+
+      item.style.display = "";
+    });
+
+    // Reorder matched items first
+    [...matched, ...others].forEach(it => gallery.appendChild(it));
+
+    noResults.style.display = matched.length ? "none" : "block";
+
+    // Scroll to filter section
+    scrollToFilter();
+  }
+
+  // Voice search
+  function startVoiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("Voice search not supported");
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.onresult = event => {
+      searchInput.value = event.results[0][0].transcript;
+      searchPlaces();
+    };
+    recognition.start();
+  }
+
+  // Filter buttons
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const district = btn.dataset.district;
+      getGalleryItems().forEach(item => {
+        if (district === "all" || normalize(item.dataset.district) === district) item.style.display = "";
+        else item.style.display = "none";
+      });
+      scrollToFilter();
+    });
+  });
+
+  // Live search while typing
+  searchInput.addEventListener("input", searchPlaces);
+
+  // Enter = search + close, Escape = close
+  searchInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      searchPlaces();
+      closeSearchPopup();
+    } else if (e.key === "Escape") closeSearchPopup();
+  });
+
+  // Close button
+  closeBtn.addEventListener("click", closeSearchPopup);
+
+  // Click outside popup content closes popup
+  popup.addEventListener("click", e => {
+    if (!popupContent.contains(e.target)) closeSearchPopup();
+  });
+
+  // Expose globally
+  window.openSearchPopup = openSearchPopup;
+  window.closeSearchPopup = closeSearchPopup;
+  window.searchPlaces = searchPlaces;
+  window.startVoiceSearch = startVoiceSearch;
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
   <script>
@@ -857,5 +1025,4 @@ document.addEventListener("DOMContentLoaded", () => {
   </script>
 </body>
 </html>
-
 
