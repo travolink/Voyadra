@@ -848,105 +848,131 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const popup = document.getElementById('searchPopup');
+  const popupContent = popup.querySelector('.search-popup-content');
+  const searchInput = document.getElementById('searchInput');
+  const noResults = document.getElementById('noResults');
+  const gallery = document.getElementById('gallery');
+  const closeBtn = document.getElementById('closeBtn');
+  const filterWrapper = document.querySelector('.filter-wrapper');
+  const filterButtons = document.querySelectorAll('.filter-btn');
 
-  const searchPopup = document.getElementById("searchPopup");
-  const searchInput = document.getElementById("searchInput");
-  const noResults = document.getElementById("noResults");
-  const closeBtn = document.getElementById("closeBtn");
-  const gallery = document.getElementById("gallery");
+  function normalize(s){ return (s||'').toLowerCase().trim(); }
+  function getGalleryItems(){ return Array.from(gallery.querySelectorAll('.gallery-item')); }
 
-  // Normalize strings for search
-  function normalize(str) {
-    return (str || "").toLowerCase().trim();
+  function openSearchPopup(){
+    popup.style.display = 'flex';
+    document.body.classList.add('no-scroll');
+    // small delay fixes mobile focus issues
+    setTimeout(()=> {
+      try {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+      } catch(e) {}
+    }, 80);
   }
 
-  // Open search popup
-  function openSearchPopup() {
-    searchPopup.style.display = "flex";
-    searchInput.value = "";
-    searchInput.focus();
+  function closeSearchPopup(){
+    popup.style.display = 'none';
+    document.body.classList.remove('no-scroll');
   }
 
-  // Close search popup
-  function closeSearchPopup() {
-    searchPopup.style.display = "none";
+  function scrollToFilter(){
+    if(!filterWrapper) return;
+    filterWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Scroll to top of gallery (optional)
-  function scrollToGallery() {
-    if (!gallery) return;
-    gallery.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // Search function: matched items first
-  function searchPlaces() {
-    const query = normalize(searchInput.value);
-    const items = Array.from(gallery.querySelectorAll(".gallery-item"));
-
-    if (!query) {
-      items.forEach(item => item.style.display = "");
-      items.forEach(item => gallery.appendChild(item));
-      noResults.style.display = "none";
-      return;
-    }
-
+  // searchPlaces: show matched items and hide others. If closeAfter==true, close popup then scroll.
+  function searchPlaces(closeAfter=false){
+    const q = normalize(searchInput.value);
+    const items = getGalleryItems();
     const matched = [];
-    const others = [];
-
     items.forEach(item => {
-      const placeName = normalize(item.querySelector(".place-name")?.innerText);
-      const altText = normalize(item.querySelector("img")?.alt);
-      const combined = `${placeName} ${altText}`;
-      if (combined.includes(query)) matched.push(item);
-      else others.push(item);
+      const placeName = normalize(item.querySelector('.place-name')?.innerText || item.querySelector('.recommended h3')?.innerText || '');
+      const altText = normalize(item.querySelector('img')?.alt || '');
+      const district = normalize(item.dataset.district || '');
+      const combined = `${placeName} ${altText} ${district}`;
+      if(!q || combined.includes(q)){
+        matched.push(item);
+        item.style.display = '';
+        item.style.opacity = '1';
+      } else {
+        item.style.display = 'none';
+        item.style.opacity = '0';
+      }
     });
 
-    // Append matched first, then others
-    [...matched, ...others].forEach(item => {
-      item.style.display = "";
-      gallery.appendChild(item);
+    // move matched items to top (preserves order of matches)
+    matched.forEach(it => gallery.appendChild(it));
+
+    noResults.style.display = matched.length ? 'none' : 'block';
+
+    if (matched.length && closeAfter) {
+      closeSearchPopup();
+      // give the UI a short moment to close keyboard & overlay then scroll
+      setTimeout(scrollToFilter, 200);
+    }
+  }
+
+  // Events
+  searchInput.addEventListener('input', () => searchPlaces(false)); // live filtering (does not close popup)
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchPlaces(true); // search and then close + scroll
+    } else if (e.key === 'Escape') {
+      closeSearchPopup();
+    }
+  });
+
+  closeBtn.addEventListener('click', closeSearchPopup);
+  popup.addEventListener('click', e => { if (!popupContent.contains(e.target)) closeSearchPopup(); });
+
+  // Keep your filter buttons behavior but close popup & scroll to filter when user taps a filter
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const district = btn.dataset.district;
+      getGalleryItems().forEach(item => {
+        if (district === 'all' || normalize(item.dataset.district) === district) {
+          item.style.display = '';
+          item.style.opacity = '1';
+        } else {
+          item.style.display = 'none';
+          item.style.opacity = '0';
+        }
+      });
+      closeSearchPopup();
+      setTimeout(scrollToFilter, 150);
     });
-
-    noResults.style.display = matched.length ? "none" : "block";
-    scrollToGallery();
-  }
-
-  // Voice search
-  function startVoiceSearch() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert("Voice search not supported on this browser");
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN";
-    recognition.onresult = event => {
-      searchInput.value = event.results[0][0].transcript;
-      searchPlaces();
-    };
-    recognition.start();
-  }
-
-  // Event listeners
-  searchInput.addEventListener("input", searchPlaces);
-  searchInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") { searchPlaces(); closeSearchPopup(); }
-    else if (e.key === "Escape") closeSearchPopup();
   });
 
-  closeBtn.addEventListener("click", closeSearchPopup);
-  searchPopup.addEventListener("click", e => {
-    if (!searchPopup.querySelector(".search-popup-content").contains(e.target)) closeSearchPopup();
-  });
-
-  // Expose functions globally
+  // expose functions used elsewhere in your markup
   window.openSearchPopup = openSearchPopup;
   window.closeSearchPopup = closeSearchPopup;
-  window.searchPlaces = searchPlaces;
-  window.startVoiceSearch = startVoiceSearch;
+  window.searchPlaces = () => searchPlaces(true);
 
+  // voice search
+  window.startVoiceSearch = function() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert('Voice search not supported on this browser');
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.onresult = (event) => {
+      searchInput.value = event.results[0][0].transcript;
+      searchPlaces(true);
+    };
+    recognition.start();
+  };
 });
 </script>
+
+
 
 
 
@@ -1001,4 +1027,5 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 
