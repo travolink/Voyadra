@@ -1102,101 +1102,84 @@ td.sunday {
 
 
 
-/* add to style.css */
-.no-scroll { overflow: hidden; height: 100vh; }      /* prevent background scroll while popup open */
-.search-popup { -webkit-overflow-scrolling: touch; } /* smoother scrolling on iOS if needed */
 
 
 
-/* Popup overlay */
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Popup Styles */
 .search-popup {
   display: none;
   position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
   z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
 }
 
 .search-popup-content {
-  position: relative;
   background: #fff;
-  padding: 30px 20px;
-  border-radius: 16px;
+  padding: 20px;
+  border-radius: 12px;
   width: 90%;
-  max-width: 450px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  animation: popupFade 0.3s ease-out;
-}
-
-@keyframes popupFade {
-  from {opacity: 0; transform: translateY(-20px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-.search-popup .close-btn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-  transition: color 0.2s;
-}
-.search-popup .close-btn:hover {
-  color: #ff4d4f;
+  max-width: 400px;
+  position: relative;
 }
 
 .search-popup-content h2 {
-  margin-bottom: 15px;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 600;
-  color: #222;
+  margin-top: 0;
+  font-size: 20px;
+  text-align: center;
 }
 
 .search-box {
   display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.search-box input {
+#searchInput {
   flex: 1;
-  padding: 12px 15px;
-  border-radius: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.search-box input:focus {
-  border-color: #007b7f;
-  box-shadow: 0 0 6px rgba(0,123,255,0.3);
+  border-radius: 6px;
 }
 
 .search-box button {
-  padding: 0 14px;
-  border: 1px solid #007b7f;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 18px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  background-color: #eee;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  background: #eee;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
 }
 
 #noResults {
-  color: #ff4d4f;
-  font-weight: 500;
+  color: red;
   margin-top: 10px;
+  text-align: center;
 }
 
-
+#gallery {
+  scroll-margin-top: 90px; /* height of your fixed navbar */
+}
 
 
 
