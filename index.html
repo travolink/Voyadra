@@ -34,10 +34,10 @@
 <section class="hero">
   <div class="swiper-container hero-swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image: url('img/hero1.jpg')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero6.JPG')"></div>
-      <div class="swiper-slide" style="background-image: url('img/hero7.png')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero9.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero1.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero6.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero7.png')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero9.jpg')"></div>
     </div>
     <!-- Pagination removed -->
   </div>
@@ -852,121 +852,123 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const popup = document.getElementById("searchPopup");
-  const popupContent = popup.querySelector(".search-popup-content");
-  const searchInput = document.getElementById("searchInput");
-  const noResults = document.getElementById("noResults");
-  const gallery = document.getElementById("gallery");
-  const closeBtn = document.getElementById("closeBtn");
-  const filterWrapper = document.querySelector(".filter-wrapper");
-  const filterButtons = document.querySelectorAll(".filter-btn");
+  const popup = document.getElementById('searchPopup');
+  const popupContent = popup.querySelector('.search-popup-content');
+  const searchInput = document.getElementById('searchInput');
+  const noResults = document.getElementById('noResults');
+  const gallery = document.getElementById('gallery');
+  const closeBtn = document.getElementById('closeBtn');
+  const filterWrapper = document.querySelector('.filter-wrapper');
+  const filterButtons = document.querySelectorAll('.filter-btn');
 
-  function normalize(str) {
-    return (str || "").toLowerCase().trim();
+  function normalize(s){ return (s||'').toLowerCase().trim(); }
+  function getGalleryItems(){ return Array.from(gallery.querySelectorAll('.gallery-item')); }
+
+  function openSearchPopup(){
+    popup.style.display = 'flex';
+    document.body.classList.add('no-scroll');
+    // small delay fixes mobile focus issues
+    setTimeout(()=> {
+      try {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+      } catch(e) {}
+    }, 80);
   }
 
-  function getGalleryItems() {
-    return Array.from(gallery.querySelectorAll(".gallery-item"));
+  function closeSearchPopup(){
+    popup.style.display = 'none';
+    document.body.classList.remove('no-scroll');
   }
 
-  // Open / Close popup
-  function openSearchPopup() {
-    popup.style.display = "flex";
-    searchInput.value = "";
-    searchInput.focus();
+  function scrollToFilter(){
+    if(!filterWrapper) return;
+    filterWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function closeSearchPopup() {
-    popup.style.display = "none";
-  }
-
-  // Scroll filter section into view (CSS scroll-margin-top handles nav offset)
-  function scrollToFilter() {
-    if (!filterWrapper) return;
-    filterWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // Search function
-  function searchPlaces() {
+  // searchPlaces: show matched items and hide others. If closeAfter==true, close popup then scroll.
+  function searchPlaces(closeAfter=false){
     const q = normalize(searchInput.value);
     const items = getGalleryItems();
-
-    let matched = [];
-    let others = [];
-
+    const matched = [];
     items.forEach(item => {
-      const placeName = normalize(item.querySelector(".place-name")?.innerText);
-      const altText = normalize(item.querySelector("img")?.alt);
-      const district = normalize(item.dataset.district);
-      const combined = `${placeName} ${altText} ${district} ${item.textContent}`;
-
-      if (!q || combined.includes(q)) matched.push(item);
-      else others.push(item);
-
-      item.style.display = "";
+      const placeName = normalize(item.querySelector('.place-name')?.innerText || item.querySelector('.recommended h3')?.innerText || '');
+      const altText = normalize(item.querySelector('img')?.alt || '');
+      const district = normalize(item.dataset.district || '');
+      const combined = `${placeName} ${altText} ${district}`;
+      if(!q || combined.includes(q)){
+        matched.push(item);
+        item.style.display = '';
+        item.style.opacity = '1';
+      } else {
+        item.style.display = 'none';
+        item.style.opacity = '0';
+      }
     });
 
-    // Reorder matched items first
-    [...matched, ...others].forEach(it => gallery.appendChild(it));
+    // move matched items to top (preserves order of matches)
+    matched.forEach(it => gallery.appendChild(it));
 
-    noResults.style.display = matched.length ? "none" : "block";
+    noResults.style.display = matched.length ? 'none' : 'block';
 
-    // Scroll to filter section
-    scrollToFilter();
+    if (matched.length && closeAfter) {
+      closeSearchPopup();
+      // give the UI a short moment to close keyboard & overlay then scroll
+      setTimeout(scrollToFilter, 200);
+    }
   }
 
-  // Voice search
-  function startVoiceSearch() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert("Voice search not supported");
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN";
-    recognition.onresult = event => {
-      searchInput.value = event.results[0][0].transcript;
-      searchPlaces();
-    };
-    recognition.start();
-  }
+  // Events
+  searchInput.addEventListener('input', () => searchPlaces(false)); // live filtering (does not close popup)
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchPlaces(true); // search and then close + scroll
+    } else if (e.key === 'Escape') {
+      closeSearchPopup();
+    }
+  });
 
-  // Filter buttons
+  closeBtn.addEventListener('click', closeSearchPopup);
+  popup.addEventListener('click', e => { if (!popupContent.contains(e.target)) closeSearchPopup(); });
+
+  // Keep your filter buttons behavior but close popup & scroll to filter when user taps a filter
   filterButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      filterButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       const district = btn.dataset.district;
       getGalleryItems().forEach(item => {
-        if (district === "all" || normalize(item.dataset.district) === district) item.style.display = "";
-        else item.style.display = "none";
+        if (district === 'all' || normalize(item.dataset.district) === district) {
+          item.style.display = '';
+          item.style.opacity = '1';
+        } else {
+          item.style.display = 'none';
+          item.style.opacity = '0';
+        }
       });
-      scrollToFilter();
+      closeSearchPopup();
+      setTimeout(scrollToFilter, 150);
     });
   });
 
-  // Live search while typing
-  searchInput.addEventListener("input", searchPlaces);
-
-  // Enter = search + close, Escape = close
-  searchInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      searchPlaces();
-      closeSearchPopup();
-    } else if (e.key === "Escape") closeSearchPopup();
-  });
-
-  // Close button
-  closeBtn.addEventListener("click", closeSearchPopup);
-
-  // Click outside popup content closes popup
-  popup.addEventListener("click", e => {
-    if (!popupContent.contains(e.target)) closeSearchPopup();
-  });
-
-  // Expose globally
+  // expose functions used elsewhere in your markup
   window.openSearchPopup = openSearchPopup;
   window.closeSearchPopup = closeSearchPopup;
-  window.searchPlaces = searchPlaces;
-  window.startVoiceSearch = startVoiceSearch;
+  window.searchPlaces = () => searchPlaces(true);
+
+  // voice search
+  window.startVoiceSearch = function() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert('Voice search not supported on this browser');
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.onresult = (event) => {
+      searchInput.value = event.results[0][0].transcript;
+      searchPlaces(true);
+    };
+    recognition.start();
+  };
 });
 </script>
 
