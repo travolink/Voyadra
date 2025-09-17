@@ -1102,6 +1102,9 @@ td.sunday {
 
 
 
+/* add to style.css */
+.no-scroll { overflow: hidden; height: 100vh; }      /* prevent background scroll while popup open */
+.search-popup { -webkit-overflow-scrolling: touch; } /* smoother scrolling on iOS if needed */
 
 
 
