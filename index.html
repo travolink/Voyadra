@@ -858,10 +858,9 @@ const closeBtn = searchPopup.querySelector(".close-btn");
 const voiceBtn = searchPopup.querySelector(".voice-btn");
 const warning = document.getElementById("searchWarning");
 
-// Height of your fixed navbar
-const NAV_HEIGHT = 70; // adjust according to your navbar height
-// Extra space above the gallery item (e.g., filter section height)
-const EXTRA_OFFSET = 50; // adjust according to your filter section height
+// Navbar height + extra space above gallery
+const NAV_HEIGHT = 70;
+const EXTRA_OFFSET = 50;
 
 // Open/Close Popup
 function openSearchPopup() {
@@ -881,11 +880,10 @@ searchPopup.addEventListener("click", (e) => {
   if (e.target === searchPopup) closeSearchPopup();
 });
 
-// Robust scroll function for all devices with extra top space
+// Scroll function
 function scrollToElement(el) {
   if (!el) return;
 
-  // Determine scrollable parent
   let scrollContainer = el.parentElement;
   while (scrollContainer) {
     const overflowY = window.getComputedStyle(scrollContainer).overflowY;
@@ -893,7 +891,6 @@ function scrollToElement(el) {
     scrollContainer = scrollContainer.parentElement;
   }
 
-  // fallback to window if no scrollable parent found
   if (!scrollContainer) scrollContainer = window;
 
   setTimeout(() => {
@@ -908,13 +905,12 @@ function scrollToElement(el) {
       scrollContainer.scrollTo({ top: offset, behavior: 'smooth' });
     }
 
-    // Force repaint for stubborn WebViews
     el.classList.add('force-scroll');
     requestAnimationFrame(() => el.classList.remove('force-scroll'));
   }, 50);
 }
 
-// Search Function
+// === OLD SEARCH FUNCTION ===
 function performSearch() {
   const query = searchInput.value.toLowerCase().trim();
   const items = Array.from(gallery.querySelectorAll(".gallery-item"));
@@ -936,10 +932,13 @@ function performSearch() {
   if (matchingItems.length > 0) {
     scrollToElement(matchingItems[0]);
     warning.style.display = "none";
+    return true; // for voice search
   } else if (query !== "") {
     warning.style.display = "block";
+    return false; // for voice search
   } else {
     warning.style.display = "none";
+    return false;
   }
 }
 
@@ -966,8 +965,18 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
 
   recognition.addEventListener("result", (event) => {
     const transcript = event.results[0][0].transcript;
+
+    // Show spoken text
     searchInput.value = transcript;
-    performSearch();
+
+    // Perform search
+    const found = performSearch();
+
+    // Close popup only if a matching place is found
+    if (found) {
+      setTimeout(() => closeSearchPopup(), 700);
+    }
+    // If not found, popup stays open
   });
 } else {
   voiceBtn.style.display = "none"; // Hide if unsupported
@@ -1032,6 +1041,7 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   </script>
 </body>
 </html>
+
 
 
 
