@@ -848,7 +848,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 
-	// DOM Elements
+// DOM Elements
 const searchBtnTop = document.querySelector(".search-btn-top");
 const searchBtnBottom = document.querySelector(".search-btn-bottom");
 const searchPopup = document.getElementById("searchPopup");
@@ -856,7 +856,6 @@ const searchInput = document.getElementById("searchInput");
 const gallery = document.getElementById("gallery");
 const closeBtn = searchPopup.querySelector(".close-btn");
 const voiceBtn = searchPopup.querySelector(".voice-btn");
-const filterSection = document.querySelector(".filter-wrapper"); // Use your filter wrapper class
 
 // Open/Close Popup
 function openSearchPopup() {
@@ -891,13 +890,11 @@ function performSearch() {
     }
   });
 
-  // Reorder gallery
   gallery.innerHTML = "";
   matchingItems.concat(otherItems).forEach(item => gallery.appendChild(item));
 
-  // Scroll to filter section
-  if (filterSection) {
-    filterSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (matchingItems.length > 0) {
+    matchingItems[0].scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
@@ -920,8 +917,9 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
     performSearch();
   });
 } else {
-  if (voiceBtn) voiceBtn.style.display = "none"; // Hide if unsupported
+  voiceBtn.style.display = "none"; // Hide if unsupported
 }
+
 
 
 </script>
