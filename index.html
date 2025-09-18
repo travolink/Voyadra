@@ -832,15 +832,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	
 	
-<!-- Search Popup -->
 <div id="searchPopup" class="search-popup">
   <div class="popup-content">
     <button class="close-btn">&times;</button>
-    <input type="text" id="searchInput" placeholder="Search a place..." />
-    <button class="voice-btn"><i class="fas fa-microphone"></i></button>
+    <div class="input-group">
+      <input type="text" id="searchInput" placeholder="Search a place..." />
+      <button class="voice-btn"><i class="fas fa-microphone"></i></button>
+    </div>
+    <div id="searchWarning" class="search-warning">Place not listed</div>
   </div>
 </div>
-
 
 
 
@@ -855,6 +856,7 @@ const searchInput = document.getElementById("searchInput");
 const gallery = document.getElementById("gallery");
 const closeBtn = searchPopup.querySelector(".close-btn");
 const voiceBtn = searchPopup.querySelector(".voice-btn");
+const warning = document.getElementById("searchWarning"); // warning element
 
 // Open/Close Popup
 function openSearchPopup() {
@@ -895,13 +897,18 @@ function performSearch() {
   if (matchingItems.length > 0) {
     // CSS scroll-margin-top + scroll-padding-top handle the offset
     matchingItems[0].scrollIntoView({ behavior: "smooth", block: "start" });
+    warning.style.display = "none";  // hide warning if results found
+  } else if (query !== "") {
+    warning.style.display = "block"; // show warning if nothing found
+  } else {
+    warning.style.display = "none";  // hide when input cleared
   }
 }
 
 // Input Event
 searchInput.addEventListener("input", performSearch);
 
-// ✅ New: Enter key triggers search + close popup
+// Enter key triggers search + close popup
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     performSearch();
