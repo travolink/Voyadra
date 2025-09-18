@@ -833,12 +833,14 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	
 <!-- Search Popup -->
-<div id="searchPopup" class="search-popup">
-  <div class="search-content">
-    <input type="text" id="searchInput" placeholder="Search..." />
-    <button id="voiceBtn"><i class="fas fa-microphone"></i></button>
-    <span id="closeBtn">&times;</span>
+<div id="searchPopup">
+  <div class="search-header">
+    <input type="text" id="searchInput" placeholder="Search place..." />
+    <i class="fas fa-microphone voice-btn" style="margin-left: 10px; color: #007b7f; border: 2px solid #007b7f; padding: 12px 14px; border-radius: 8px; outline: none; box-sizing: border-box; margin: 0; flex: 1;"></i>
+    <i class="fas fa-times close-btn"></i>
   </div>
+
+  <div id="searchResults"></div>
 </div>
 
 
@@ -847,74 +849,88 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 <script>
-// Elements
+// DOM Elements
+const searchBtnTop = document.querySelector(".search-btn-top");
+const searchBtnBottom = document.querySelector(".search-btn-bottom");
 const searchPopup = document.getElementById("searchPopup");
 const searchInput = document.getElementById("searchInput");
-const closeBtn = document.getElementById("closeBtn");
-const voiceBtn = document.getElementById("voiceBtn");
-const galleryItems = document.querySelectorAll(".gallery-item");
+const gallery = document.getElementById("gallery");
+const closeBtn = searchPopup.querySelector(".close-btn");
+const voiceBtn = searchPopup.querySelector(".voice-btn");
+const filterSection = document.querySelector(".filter-wrapper");
 
-// Open popup
-document.querySelector(".search-btn-top").addEventListener("click", () => {
+// Open/Close Popup
+function openSearchPopup() {
   searchPopup.style.display = "flex";
   searchInput.focus();
-});
-document.querySelector(".search-btn-bottom").addEventListener("click", () => {
-  searchPopup.style.display = "flex";
-  searchInput.focus();
-});
+}
+function closeSearchPopup() {
+  searchPopup.style.display = "none";
+}
 
-// Close popup
-closeBtn.addEventListener("click", () => searchPopup.style.display = "none");
+// Event Listeners
+searchBtnTop.addEventListener("click", openSearchPopup);
+searchBtnBottom.addEventListener("click", openSearchPopup);
+closeBtn.addEventListener("click", closeSearchPopup);
 searchPopup.addEventListener("click", (e) => {
-  if (e.target === searchPopup) searchPopup.style.display = "none";
+  if (e.target === searchPopup) closeSearchPopup();
 });
 
-// Search function
-function filterGallery(query) {
-  const lowerQuery = query.toLowerCase();
-  let firstVisible = null;
+// Search Function
+function performSearch() {
+  const query = searchInput.value.toLowerCase().trim();
+  const items = Array.from(gallery.querySelectorAll(".gallery-item"));
+  const matchingItems = [];
+  const otherItems = [];
 
-  galleryItems.forEach(item => {
+  items.forEach(item => {
     const placeName = item.querySelector(".place-name").textContent.toLowerCase();
-    if (placeName.includes(lowerQuery)) {
-      item.style.display = "block";
-      if (!firstVisible) firstVisible = item;
+    if (placeName.includes(query) && query !== "") {
+      matchingItems.push(item);
     } else {
-      item.style.display = "none";
+      otherItems.push(item);
     }
   });
 
-  // Scroll first visible item to top
-  if (firstVisible) {
-    firstVisible.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Reorder gallery
+  gallery.innerHTML = "";
+  matchingItems.concat(otherItems).forEach(item => gallery.appendChild(item));
+
+  // Scroll to filter section
+  if (filterSection) {
+    filterSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
-// Input listener
-searchInput.addEventListener("input", () => {
-  filterGallery(searchInput.value);
+// Input Event
+searchInput.addEventListener("input", performSearch);
+
+// Enter Key Functionality
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    performSearch();
+    closeSearchPopup();
+  }
 });
 
 // Voice Search
-if ("webkitSpeechRecognition" in window) {
-  const recognition = new webkitSpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
+if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
   recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
   voiceBtn.addEventListener("click", () => recognition.start());
 
-  recognition.onresult = (event) => {
+  recognition.addEventListener("result", (event) => {
     const transcript = event.results[0][0].transcript;
     searchInput.value = transcript;
-    filterGallery(transcript);
-    recognition.stop();
-  };
-
-  recognition.onerror = () => recognition.stop();
+    performSearch();
+    closeSearchPopup();
+  });
 } else {
-  voiceBtn.style.display = "none";
+  if (voiceBtn) voiceBtn.style.display = "none"; // Hide if unsupported
 }
 
 </script>
