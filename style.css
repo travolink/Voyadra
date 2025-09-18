@@ -1102,77 +1102,82 @@ td.sunday {
 
 
 
-/* Popup Container */
+/* Search Popup */
 #searchPopup {
-  display: none;  /* hidden by default */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 300px;
-  border: 2px solid #007b7f;
-  border-radius: 12px;
-  padding: 12px 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  background: #fff;
-  z-index: 9999;
-  box-sizing: border-box; /* ensures padding doesn't overflow */
-  overflow: hidden;       /* hides accidental overflow */
-}
-
-/* Top bar inside popup: search + voice */
-.popup-top-bar {
-  display: flex;
+  max-width: 450px;
+  padding: 25px 30px;
+  border: 2px solid #007b7f; /* Your border color */
+  border-radius: 18px; /* Rounded corners for modern look */
+  display: none; /* Initially hidden */
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* align left */
-  gap: 4px; /* small gap between input and mic */
-  margin-bottom: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px); /* Subtle glassy effect */
+  z-index: 9999;
 }
 
-/* Search input */
-#searchInput {
-  flex: 1;
-  padding: 10px 12px;
+/* Input Field */
+#searchPopup input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
   font-size: 16px;
   border: 2px solid #007b7f;
-  border-radius: 8px;
+  border-radius: 12px;
   outline: none;
-  box-sizing: border-box;
-  margin: 0; /* remove extra margin */
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-/* Voice icon next to search input */
-.voice-icon {
-  cursor: pointer;
+#searchPopup input[type="text"]:focus {
+  border-color: #007b7f;
+  box-shadow: 0 0 15px rgba(0, 123, 127, 0.3);
+}
+
+/* Close Button */
+#searchPopup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
   font-size: 20px;
   color: #007b7f;
-  flex-shrink: 0; /* prevents shrinking */
-  margin: 0; /* remove left margin */
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-/* Close icon at top-right corner */
-.close-btn {
+#searchPopup .close-btn:hover {
+  transform: rotate(90deg);
+}
+
+/* Voice Button */
+#searchPopup .voice-btn {
   position: absolute;
-  top: 3px;
-  right: 5px;
-  font-size: 13px;
-  cursor: pointer;
+  top: 12px;
+  left: 12px;
+  font-size: 20px;
   color: #007b7f;
-}
-
-/* Gallery or search results inside popup */
-#searchResults {
-  margin-top: 10px;
-  max-height: 300px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-/* Each result item */
-.result-item {
-  padding: 8px 10px;
-  border-bottom: 1px solid #007b7f;
   cursor: pointer;
-  word-break: break-word; /* ensures long names wrap */
+  transition: transform 0.2s;
+}
+
+#searchPopup .voice-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Modern placeholder effect */
+#searchPopup input::placeholder {
+  color: #007b7f;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  #searchPopup {
+    width: 95%;
+    padding: 20px;
+  }
 }
