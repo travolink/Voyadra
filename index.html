@@ -860,6 +860,8 @@ const warning = document.getElementById("searchWarning");
 
 // Height of your fixed navbar
 const NAV_HEIGHT = 70; // adjust according to your navbar height
+// Extra space above the gallery item (e.g., filter section height)
+const EXTRA_OFFSET = 50; // adjust according to your filter section height
 
 // Open/Close Popup
 function openSearchPopup() {
@@ -879,7 +881,7 @@ searchPopup.addEventListener("click", (e) => {
   if (e.target === searchPopup) closeSearchPopup();
 });
 
-// Universal scroll function
+// Robust scroll function for all devices with extra top space
 function scrollToElement(el) {
   if (!el) return;
 
@@ -898,7 +900,7 @@ function scrollToElement(el) {
     const elRect = el.getBoundingClientRect();
     const containerTop = scrollContainer === window ? 0 : scrollContainer.getBoundingClientRect().top;
     const currentScroll = scrollContainer === window ? window.pageYOffset : scrollContainer.scrollTop;
-    const offset = elRect.top - containerTop + currentScroll - NAV_HEIGHT;
+    const offset = elRect.top - containerTop + currentScroll - NAV_HEIGHT - EXTRA_OFFSET;
 
     if (scrollContainer === window) {
       window.scrollTo({ top: offset, behavior: 'smooth' });
@@ -906,7 +908,7 @@ function scrollToElement(el) {
       scrollContainer.scrollTo({ top: offset, behavior: 'smooth' });
     }
 
-    // Force repaint for WebViews
+    // Force repaint for stubborn WebViews
     el.classList.add('force-scroll');
     requestAnimationFrame(() => el.classList.remove('force-scroll'));
   }, 50);
@@ -971,8 +973,6 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   voiceBtn.style.display = "none"; // Hide if unsupported
 }
 </script>
-
-
 
 
 
