@@ -867,6 +867,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function openSearchPopup(){
     popup.style.display = 'flex';
     document.body.classList.add('no-scroll');
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
     setTimeout(()=> {
       try {
         searchInput.focus();
@@ -878,15 +881,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeSearchPopup(){
     popup.style.display = 'none';
     document.body.classList.remove('no-scroll');
+    // ✅ Re-enable scroll (mobile fix)
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
   }
 
-  // ✅ Now scrolls to FILTER section, not gallery
+  // ✅ Scrolls to filter section (after popup closes)
   function scrollToFilter(){
     if(!filterWrapper) return;
-    filterWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      filterWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
   }
 
-  // searchPlaces: reorder matched items to top, hide non-matches if needed
+  // searchPlaces: reorder matched items to top, fade others
   function searchPlaces(closeAfter=false){
     const q = normalize(searchInput.value);
     const items = getGalleryItems();
@@ -906,7 +914,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         others.push(item);
         item.style.display = '';
-        item.style.opacity = '0.4'; // faded but still visible
+        item.style.opacity = '0.4'; // faded non-match
       }
     });
 
@@ -919,7 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (matched.length && closeAfter) {
       closeSearchPopup();
-      setTimeout(scrollToFilter, 200); // 👈 scroll to filter section
+      scrollToFilter();
     }
   }
 
@@ -937,7 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
   closeBtn.addEventListener('click', closeSearchPopup);
   popup.addEventListener('click', e => { if (!popupContent.contains(e.target)) closeSearchPopup(); });
 
-  // Filter buttons keep same behavior
+  // Filter buttons
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       filterButtons.forEach(b => b.classList.remove('active'));
@@ -952,11 +960,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       closeSearchPopup();
-      setTimeout(scrollToFilter, 150);
+      scrollToFilter();
     });
   });
 
-  // Expose for buttons in navbar
+  // Expose for navbar buttons
   window.openSearchPopup = openSearchPopup;
   window.closeSearchPopup = closeSearchPopup;
   window.searchPlaces = () => searchPlaces(true);
@@ -975,6 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 </script>
+
 
 
 
