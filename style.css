@@ -1102,45 +1102,77 @@ td.sunday {
 
 
 
-.search-popup {
-  display: none;
+/* Popup Container */
+#searchPopup {
+  display: none;  /* hidden by default */
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 300px;
+  border: 2px solid #007b7f;
+  border-radius: 12px;
+  padding: 12px 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  background: #fff;
   z-index: 9999;
+  box-sizing: border-box; /* ensures padding doesn't overflow */
+  overflow: hidden;       /* hides accidental overflow */
 }
 
-.search-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
+/* Top bar inside popup: search + voice */
+.popup-top-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-start; /* align left */
+  gap: 4px; /* small gap between input and mic */
+  margin-bottom: 10px;
 }
 
+/* Search input */
 #searchInput {
-  padding: 10px;
-  width: 250px;
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 2px solid #007b7f;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  margin: 0; /* remove extra margin */
 }
 
-#voiceBtn {
-  padding: 10px;
+/* Voice icon next to search input */
+.voice-icon {
   cursor: pointer;
-}
-
-#closeBtn {
-  position: absolute;
-  top: 5px;
-  right: 10px;
   font-size: 20px;
-  cursor: pointer;
+  color: #007b7f;
+  flex-shrink: 0; /* prevents shrinking */
+  margin: 0; /* remove left margin */
 }
 
+/* Close icon at top-right corner */
+.close-btn {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #007b7f;
+}
 
+/* Gallery or search results inside popup */
+#searchResults {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
 
-
+/* Each result item */
+.result-item {
+  padding: 8px 10px;
+  border-bottom: 1px solid #007b7f;
+  cursor: pointer;
+  word-break: break-word; /* ensures long names wrap */
+}
