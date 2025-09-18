@@ -25,9 +25,9 @@
       <li>Gallery</li>
       <li>Contact</li>
     </ul>
-    <div class="icons" onclick="openSearchPopup()">
-      <i class="fas fa-search"></i>
-    </div>
+	  <div class="icons search-btn-top">
+       <i class="fas fa-search"></i>
+      </div>
   </nav>
 
   <!-- ✅ Updated Hero Section -->
@@ -824,7 +824,7 @@ document.addEventListener("DOMContentLoaded", () => {
   <!-- Bottom Nav -->
   <div class="bottom-nav">
     <button><i class="ri-tent-line"></i></button>
-    <button onclick="openSearchPopup()"><i class="ri-search-eye-line"></i></button>
+	<button class="search-btn-bottom"><i class="ri-search-eye-line"></i></button>
     <button><i class="ri-map-pin-line"></i></button>
     <button><i class="ri-instagram-line"></i></button>
     <button><i class="ri-user-heart-line"></i></button>
@@ -834,14 +834,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 <!-- Search Popup -->
 <div id="searchPopup" class="search-popup">
-  <div class="search-popup-content">
-    <span class="close-btn" id="closeBtn">&times;</span>
-    <h2>Search Places</h2>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Type place name..." />
-      <button onclick="startVoiceSearch()" title="Voice Search">🎙️</button>
-    </div>
-    <div id="noResults" style="display:none;">No places found</div>
+  <div class="search-content">
+    <input type="text" id="searchInput" placeholder="Search..." />
+    <button id="voiceBtn"><i class="fas fa-microphone"></i></button>
+    <span id="closeBtn">&times;</span>
   </div>
 </div>
 
@@ -851,140 +847,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const popup = document.getElementById('searchPopup');
-  const popupContent = popup.querySelector('.search-popup-content');
-  const searchInput = document.getElementById('searchInput');
-  const noResults = document.getElementById('noResults');
-  const gallery = document.getElementById('gallery');
-  const closeBtn = document.getElementById('closeBtn');
-  const filterWrapper = document.querySelector('.filter-wrapper');
-  const filterButtons = document.querySelectorAll('.filter-btn');
+// Elements
+const searchPopup = document.getElementById("searchPopup");
+const searchInput = document.getElementById("searchInput");
+const closeBtn = document.getElementById("closeBtn");
+const voiceBtn = document.getElementById("voiceBtn");
+const galleryItems = document.querySelectorAll(".gallery-item");
 
-  function normalize(s){ return (s||'').toLowerCase().trim(); }
-  function getGalleryItems(){ return Array.from(gallery.querySelectorAll('.gallery-item')); }
-
-  function openSearchPopup(){
-    popup.style.display = 'flex';
-    document.body.classList.add('no-scroll');
-    // small delay fixes mobile focus issues
-    setTimeout(()=> {
-      try {
-        searchInput.focus();
-        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
-      } catch(e) {}
-    }, 80);
-  }
-
-  function closeSearchPopup(){
-    popup.style.display = 'none';
-    document.body.classList.remove('no-scroll');
-
-    // ✅ Hard reset scroll lock on mobile
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-    document.body.style.position = '';
-    document.documentElement.style.position = '';
-
-    // ✅ Force repaint to re-enable scrolling
-    window.scrollTo(0, window.scrollY);
-  }
-
-  function scrollToFilter(){
-    if(!filterWrapper) return;
-
-    setTimeout(() => {
-      // ✅ Manual scroll for better mobile support
-      const y = filterWrapper.getBoundingClientRect().top + window.scrollY - 60; 
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }, 500); // wait for popup + keyboard to close
-  }
-
-  // searchPlaces: show matched items and hide others. If closeAfter==true, close popup then scroll.
-  function searchPlaces(closeAfter=false){
-    const q = normalize(searchInput.value);
-    const items = getGalleryItems();
-    const matched = [];
-    items.forEach(item => {
-      const placeName = normalize(item.querySelector('.place-name')?.innerText || item.querySelector('.recommended h3')?.innerText || '');
-      const altText = normalize(item.querySelector('img')?.alt || '');
-      const district = normalize(item.dataset.district || '');
-      const combined = `${placeName} ${altText} ${district}`;
-      if(!q || combined.includes(q)){
-        matched.push(item);
-        item.style.display = '';
-        item.style.opacity = '1';
-      } else {
-        item.style.display = 'none';
-        item.style.opacity = '0';
-      }
-    });
-
-    // move matched items to top (preserves order of matches)
-    matched.forEach(it => gallery.appendChild(it));
-
-    noResults.style.display = matched.length ? 'none' : 'block';
-
-    if (matched.length && closeAfter) {
-      closeSearchPopup();
-      // give UI a short moment to close keyboard & overlay then scroll
-      setTimeout(scrollToFilter, 300);
-    }
-  }
-
-  // Events
-  searchInput.addEventListener('input', () => searchPlaces(false)); // live filtering
-  searchInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      searchPlaces(true); // search + close popup + scroll
-    } else if (e.key === 'Escape') {
-      closeSearchPopup();
-    }
-  });
-
-  closeBtn.addEventListener('click', closeSearchPopup);
-  popup.addEventListener('click', e => { if (!popupContent.contains(e.target)) closeSearchPopup(); });
-
-  // Filter buttons
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const district = btn.dataset.district;
-      getGalleryItems().forEach(item => {
-        if (district === 'all' || normalize(item.dataset.district) === district) {
-          item.style.display = '';
-          item.style.opacity = '1';
-        } else {
-          item.style.display = 'none';
-          item.style.opacity = '0';
-        }
-      });
-      closeSearchPopup();
-      setTimeout(scrollToFilter, 300);
-    });
-  });
-
-  // Expose functions
-  window.openSearchPopup = openSearchPopup;
-  window.closeSearchPopup = closeSearchPopup;
-  window.searchPlaces = () => searchPlaces(true);
-
-  // Voice search
-  window.startVoiceSearch = function() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert('Voice search not supported on this browser');
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'en-IN';
-    recognition.onresult = (event) => {
-      searchInput.value = event.results[0][0].transcript;
-      searchPlaces(true);
-    };
-    recognition.start();
-  };
+// Open popup
+document.querySelector(".search-btn-top").addEventListener("click", () => {
+  searchPopup.style.display = "flex";
+  searchInput.focus();
 });
+document.querySelector(".search-btn-bottom").addEventListener("click", () => {
+  searchPopup.style.display = "flex";
+  searchInput.focus();
+});
+
+// Close popup
+closeBtn.addEventListener("click", () => searchPopup.style.display = "none");
+searchPopup.addEventListener("click", (e) => {
+  if (e.target === searchPopup) searchPopup.style.display = "none";
+});
+
+// Search function
+function filterGallery(query) {
+  const lowerQuery = query.toLowerCase();
+  let firstVisible = null;
+
+  galleryItems.forEach(item => {
+    const placeName = item.querySelector(".place-name").textContent.toLowerCase();
+    if (placeName.includes(lowerQuery)) {
+      item.style.display = "block";
+      if (!firstVisible) firstVisible = item;
+    } else {
+      item.style.display = "none";
+    }
+  });
+
+  // Scroll first visible item to top
+  if (firstVisible) {
+    firstVisible.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+// Input listener
+searchInput.addEventListener("input", () => {
+  filterGallery(searchInput.value);
+});
+
+// Voice Search
+if ("webkitSpeechRecognition" in window) {
+  const recognition = new webkitSpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = "en-US";
+
+  voiceBtn.addEventListener("click", () => recognition.start());
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    searchInput.value = transcript;
+    filterGallery(transcript);
+    recognition.stop();
+  };
+
+  recognition.onerror = () => recognition.stop();
+} else {
+  voiceBtn.style.display = "none";
+}
+
 </script>
+
 
 
 
