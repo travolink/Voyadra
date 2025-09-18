@@ -867,9 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function openSearchPopup(){
     popup.style.display = 'flex';
     document.body.classList.add('no-scroll');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
+    // small delay fixes mobile focus issues
     setTimeout(()=> {
       try {
         searchInput.focus();
@@ -881,62 +879,65 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeSearchPopup(){
     popup.style.display = 'none';
     document.body.classList.remove('no-scroll');
-    // ✅ Re-enable scroll (mobile fix)
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
+
+    // ✅ Hard reset scroll lock on mobile
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    document.body.style.position = '';
+    document.documentElement.style.position = '';
+
+    // ✅ Force repaint to re-enable scrolling
+    window.scrollTo(0, window.scrollY);
   }
 
-  // ✅ Scrolls to filter section (after popup closes)
   function scrollToFilter(){
     if(!filterWrapper) return;
+
     setTimeout(() => {
-      filterWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 300);
+      // ✅ Manual scroll for better mobile support
+      const y = filterWrapper.getBoundingClientRect().top + window.scrollY - 60; 
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }, 500); // wait for popup + keyboard to close
   }
 
-  // searchPlaces: reorder matched items to top, fade others
+  // searchPlaces: show matched items and hide others. If closeAfter==true, close popup then scroll.
   function searchPlaces(closeAfter=false){
     const q = normalize(searchInput.value);
     const items = getGalleryItems();
     const matched = [];
-    const others = [];
-
     items.forEach(item => {
-      const placeName = normalize(item.querySelector('.place-name')?.innerText || '');
+      const placeName = normalize(item.querySelector('.place-name')?.innerText || item.querySelector('.recommended h3')?.innerText || '');
       const altText = normalize(item.querySelector('img')?.alt || '');
       const district = normalize(item.dataset.district || '');
       const combined = `${placeName} ${altText} ${district}`;
-
       if(!q || combined.includes(q)){
         matched.push(item);
         item.style.display = '';
         item.style.opacity = '1';
       } else {
-        others.push(item);
-        item.style.display = '';
-        item.style.opacity = '0.4'; // faded non-match
+        item.style.display = 'none';
+        item.style.opacity = '0';
       }
     });
 
-    // Move matched items first
-    gallery.innerHTML = '';
+    // move matched items to top (preserves order of matches)
     matched.forEach(it => gallery.appendChild(it));
-    others.forEach(it => gallery.appendChild(it));
 
     noResults.style.display = matched.length ? 'none' : 'block';
 
     if (matched.length && closeAfter) {
       closeSearchPopup();
-      scrollToFilter();
+      // give UI a short moment to close keyboard & overlay then scroll
+      setTimeout(scrollToFilter, 300);
     }
   }
 
   // Events
-  searchInput.addEventListener('input', () => searchPlaces(false));
+  searchInput.addEventListener('input', () => searchPlaces(false)); // live filtering
   searchInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      searchPlaces(true);
+      searchPlaces(true); // search + close popup + scroll
     } else if (e.key === 'Escape') {
       closeSearchPopup();
     }
@@ -957,14 +958,15 @@ document.addEventListener('DOMContentLoaded', () => {
           item.style.opacity = '1';
         } else {
           item.style.display = 'none';
+          item.style.opacity = '0';
         }
       });
       closeSearchPopup();
-      scrollToFilter();
+      setTimeout(scrollToFilter, 300);
     });
   });
 
-  // Expose for navbar buttons
+  // Expose functions
   window.openSearchPopup = openSearchPopup;
   window.closeSearchPopup = closeSearchPopup;
   window.searchPlaces = () => searchPlaces(true);
@@ -983,6 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 </script>
+
 
 
 
