@@ -1,1 +1,1146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+font-family: 'Nunito', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 100px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 40px;
+}
+
+.nav-links li {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.nav-links li:hover {
+  color: #ff8c1a;
+}
+.nav-links li.active {
+  font-weight: bold;
+  color: black;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+/* ? Updated Hero Section */
+.hero {
+  margin: 80px 20px 40px 20px;
+  height: 70vh;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  color: #fff;
+  text-align: left;
+  padding: 0 50px 50px 50px;
+}
+
+.hero-swiper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-swiper .swiper-slide {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+}
+
+.swiper-pagination {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: 50vh;
+    padding: 0 30px 30px 30px;
+  }
+  .hero-content {
+    bottom: 20px;
+    left: 30px;
+  }
+  .hero-content h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    height: 40vh;
+    padding: 0 20px 20px 20px;
+  }
+  .hero-content {
+    bottom: 15px;
+    left: 20px;
+  }
+  .hero-content h1 {
+    font-size: 22px;
+  }
+}
+
+/* ? Include all other styles from your original file unchanged below this section */
+
+/* Navbar, slider, cards, galleries, modals, etc. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Category Slider Section */
+.slider-wrapper {
+  padding: 0 16px;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.slider {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 0;
+  max-width: 100%;
+  scrollbar-width: none; /* Firefox */
+  scroll-padding-left: 16px;
+  scroll-padding-right: 16px;
+  margin-right: 10px;
+  margin-left: 10px;
+  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+  -webkit-focus-ring-color: transparent;
+  outline: none;
+}
+
+.slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.card {
+  flex: 0 0 auto;
+  width: 230px;
+  border-radius: 14px;
+  padding: 20px 12px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  scroll-snap-align: center;
+  border: 1px solid #ddd;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  z-index: 1000;
+  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+  -webkit-focus-ring-color: transparent;
+  outline: none;
+}
+.bottom-nav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+.bottom-nav button i {
+  font-size: 25px;
+  margin-bottom: 3px;
+}
+.bottom-nav button.active,
+.bottom-nav button:hover {
+  color: #ff8c1a;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav-links,
+  .icons {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .slider-wrapper {
+    padding: 0 8px;
+  }
+
+  .slider {
+    gap: 12px;
+    scroll-padding-left: 8px;
+    scroll-padding-right: 8px;
+  }
+
+  .card {
+    width: 140px;
+    padding: 18px 10px;
+  }
+
+  .card img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .card h3 {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .slider-wrapper {
+    padding: 0 6px;
+  }
+
+  .slider {
+    gap: 10px;
+    scroll-padding-left: 6px;
+    scroll-padding-right: 6px;
+  }
+
+  .card {
+    width: 80px;
+    padding: 8px 3px;
+  }
+
+  .card img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .card h3 {
+    font-size: 7px;
+  }
+}
+
+
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 20px;
+      padding: 30px;
+	  padding-bottom: 10px;
+	  padding-top: 50px;
+	  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+      -webkit-focus-ring-color: transparent;
+      outline: none;
+    }
+
+    h2 {
+      font-size: clamp(12px, 1.5vw, 22px);
+      margin: 0;
+    }
+
+    .arrows {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      gap: 8px;
+	  padding: 10px;
+	  padding-bottom: 10px;
+	  padding-top: 60px;
+    }
+
+    .arrow-btn {
+      background: none;
+      border: none;
+      color: #333;
+      font-size: clamp(11px, 1vw, 13px);
+      cursor: pointer;
+      padding: 6px;
+      transition: color 0.3s;
+    }
+
+    .arrow-btn:hover {
+      color: #ff8c2b;
+    }
+
+    .popular-container {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      margin-left: 20px;
+      margin-right: 15px;
+	  padding-bottom: 30px;
+      /* hide scrollbar */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .popular-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .popular {
+      position: relative;
+      flex: 0 0 170px;
+      height: 210px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      transition: transform 0.3s;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .popular:hover {
+      transform: scale(1.02);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+    }
+
+    .popular-content {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 8px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    }
+
+    .popular-content h3 {
+      font-size: 14px;
+      margin: 0 0 3px;
+    }
+
+    .info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 10px;
+    }
+
+    .info i {
+      color: #ffa200;
+      font-size: 10px;
+    }
+
+
+    .category-container {
+      display: flex;
+      gap: 12px; /* spacing between buttons */
+      overflow-x: auto;
+      padding: 12px 0;
+      margin: 0 10px; /* left & right margin */
+      scrollbar-width: none; /* Firefox */
+      scroll-snap-type: x mandatory;
+      background: #fff;
+      justify-content: flex-start;
+	  -webkit-tap-highlight-color: transparent; /* For iOS Safari and Chrome Android */
+      -webkit-focus-ring-color: transparent;
+      outline: none;
+    }
+
+    .category-container::-webkit-scrollbar {
+      display: none; /* Chrome, Safari */
+    }
+
+    .category-btn {
+      flex: 0 0 auto; /* auto-size on mobile */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px 16px; /* ? more inner space */
+      border-radius: 10px;
+      border: none;
+      font-size: 11px; /* smaller text mobile */
+      background: #f0f0f0;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      scroll-snap-align: start;
+    }
+
+    .category-btn i {
+      font-size: 11px; /* smaller icons mobile */
+    }
+
+    /* Hover color */
+    .category-btn:hover {
+      background: #007b7f;
+      color: #fff;
+    }
+
+    /* ??? Desktop: buttons stretch evenly across page */
+    @media (min-width: 768px) {
+      .category-container {
+        overflow-x: hidden;
+        justify-content: space-between;
+      }
+
+      .category-btn {
+        flex: 1; /* equal width */
+        font-size: 13px; /* smaller text desktop */
+        padding: 12px 18px; /* ? more inner padding */
+      }
+
+      .category-btn i {
+        font-size: 13px; /* smaller icons desktop */
+      }
+    }
+
+
+
+
+    .swiper {
+      width: 100%;
+	  padding-left: 10px;
+	  padding-right: 10px;
+	  padding-top: 15px;
+    }
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+    }
+
+    .recommended {
+      position: relative;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .recommended img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 21 / 9; /* shorter height */
+      object-fit: cover;
+      display: block;
+    }
+
+    .recommended h3,
+    .recommended p {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      color: #fff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+      margin: 0;
+    }
+
+    .recommended h3 {
+      bottom: 8px;
+      font-size: clamp(13px, 2vw, 16px);
+    }
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+    @media (max-width: 900px) {
+	 .popular-container .arrows {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      gap: 8px;
+	  padding-bottom: 10px;
+	  padding-top: 10px;
+    }
+
+    .popular-container .arrow-btn {
+      background: none;
+      border: none;
+      color: #333;
+      font-size: clamp(5px, .5vw, 7px);
+      cursor: pointer;
+      padding: 6px;
+      transition: color 0.3s;
+    }
+
+    .popular-container {
+      gap: 10px;
+      margin-left: 20px;
+      margin-right: 15px;
+	  padding-bottom: 30px;
+    }
+
+    .popular {
+      flex: 0 0 150px;
+      height: 230px;
+    }
+		
+		
+		
+		
+    }
+
+/* Button */
+.open-calendar {
+  padding: 10px 20px;
+  background: #007b7f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: calc(100%);   /* ðŸ”¹ respect 10px margin on both sides */
+  height: calc(100%);  /* ðŸ”¹ respect top/bottom margin */
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+}
+.modal-content {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow-x: hidden;
+}
+
+/* Header */
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+.month-year {
+  font-size: 18px;
+  font-weight: bold;
+}
+.calendar-arrow {
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+}
+
+/* Calendar table */
+#calendarTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 24px; /* small gap before notes */
+}
+#calendarTable th,
+#calendarTable td {
+  padding: 6px;
+  text-align: center;
+  word-wrap: break-word;
+}
+#calendarTable td span {
+  font-size: 14px;
+}
+
+/* Highlights */
+td.today span {
+  color: #007b7f; /* green for today */
+  font-weight: bold;
+}
+td.festival span {
+  color: #fbc02d; /* yellow for festival */
+  font-weight: bold;
+}
+td.sunday {
+  color: #d32f2f; /* red for Sundays */
+  font-weight: bold;
+}
+.note {
+  margin-top: 0;        /* remove extra, keep spacing controlled by table */
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  color: #333;
+}
+.note div {
+  margin-bottom: 6px;
+  padding-left: 8px;
+  border-left: 3px solid #fbc02d;
+}
+.note b {
+  color: #000;
+  margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .modal-content {
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  .month-year {
+    font-size: 16px;
+  }
+  .calendar-arrow {
+    font-size: 18px;
+  }
+  #calendarTable th,
+  #calendarTable td {
+    padding: 4px;
+    font-size: 12px;
+  }
+  #calendarTable td span {
+    font-size: 12px;
+  }
+  .note {
+    font-size: 12px;
+  }
+}
+
+
+
+/* Overlay background */
+.popup-overlay {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Overlay background */
+.popup-overlay {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup container */
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  text-align: center;
+  position: relative;
+  animation: popupFade 0.3s ease;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #333;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: #007b7f;
+}
+
+/* Popup title */
+.popup-content h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #007b7f;
+}
+
+/* Popup buttons */
+.popup-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #007b7f;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #007b7f;
+  transition: all 0.2s ease;
+}
+.popup-btn i {
+  font-size: 18px;
+}
+.popup-btn:hover, 
+.popup-btn.tap-active {
+  background: #007b7f;
+  color: #fff;
+}
+
+/* Small animation */
+@keyframes popupFade {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+
+/* ? Responsive gallery - Instagram-like */
+.gallery {
+  column-count: 3;
+  column-gap: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+/* ? Tablets: reduce to 2 columns */
+@media (max-width: 1023px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+@media (max-width: 900px) {
+  .gallery {
+    margin-bottom: 60px;
+  }
+}
+
+/* ? Mobile: keep 2 columns (not 1 like before) */
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+
+.gallery-item {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.info-overlay {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7);
+  font-size: 1rem;
+}
+
+.place-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.direction-text {
+  margin-top: 2px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  background: #ff8c1a;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ? Filter wrapper - aligned center */
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+  gap: 10px;
+  margin-top: 20px;
+  scroll-margin-top: 90px; /* Adjust this to your navbar height + spacing */
+}
+
+/* ? Scrollable filter bar */
+.filter-container {
+  flex: 1;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filter-container::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-bar {
+  display: inline-flex;
+  gap: 43px;
+  align-items: center;
+}
+
+.filter-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.filter-btn[data-district="all"] {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #000;
+}
+
+.filter-btn.active {
+  color: #ff8c1a;
+}
+
+/* ? Scroll buttons */
+.scroll-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.scroll-btn:hover {
+  color: #000;
+}
+
+/* ? Responsive filter bar spacing */
+@media (max-width: 900px) {
+  .filter-bar {
+    gap: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-bar {
+    gap: 16px;
+  }
+  .filter-btn {
+    font-size: 0.75rem;
+  }
+  .scroll-btn {
+    font-size: 0.65rem;
+  }
+}
+
+/* ? Smooth fade-out for filter */
+.gallery-item[style*="display: none"] {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+/* Popup box */
+.popup-box {
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  width:90%;
+  max-width:400px;
+  position:relative;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.popup-box h3 {
+  margin-bottom:15px;
+  font-size:1.2rem;
+  color:#333;
+}
+
+.popup-box button {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  margin:8px 0;
+  padding:12px;
+  background:#fff;               /* White background */
+  color:#007b7f;                 /* Teal text */
+  border:2px solid #007b7f;      /* Border only */
+  border-radius:8px;
+  cursor:pointer;
+  font-size:1rem;
+  transition:all 0.3s ease;
+}
+
+.popup-box button:hover {
+  background:#007b7f;            /* On hover ? filled */
+  color:#fff;
+}
+
+.card.active-tap {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.card.tap-active, .category-btn.tap-active, .popup-btn.tap-active {
+  transform: scale(0.97);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+.popup-btn.tap-active {
+  border-color: #007b7f;
+  color: #007b7f;
+  transform: scale(0.97);
+}
+
+
+
+
+
+
+
+
+.search-popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.search-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#searchInput {
+  padding: 10px;
+  width: 250px;
+}
+
+#voiceBtn {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#closeBtn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
 
