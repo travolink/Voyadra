@@ -2,10 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
-/* set this to your real nav height */
+/* Navbar height */
 :root { --nav-h: 120px; }
 
 html {
@@ -13,23 +13,31 @@ html {
   scroll-padding-top: var(--nav-h); /* helps when scrolling the root */
 }
 
-/* MORE ROBUST — directly on the targets (works even if a different container is scrolled) */
-.gallery-item {
-  scroll-margin-top: calc(var(--nav-h) + 8px); /* leaves a small gap */
+/* Base HTML & body */
+html, body {
+  height: 100%;
+  background: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* smooth momentum scroll on iOS/Android */
 }
 
-/* If your gallery itself is the scrolling element (e.g. overflow:auto), apply padding to it */
+/* Gallery container */
 #gallery {
   scroll-padding-top: var(--nav-h);
   scroll-behavior: smooth;
 }
 
-
-html, body {
-  height: 100%;
-  background: #fff;
-  overflow-x: hidden;
+.gallery-item {
+  scroll-margin-top: calc(var(--nav-h) + 8px); /* leaves a small gap */
 }
+
+/* WebView repaint fix */
+.force-scroll {
+  transform: translateZ(0);
+}
+
+
 
 /* Navbar */
 .navbar {
