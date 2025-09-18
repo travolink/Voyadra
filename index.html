@@ -34,10 +34,10 @@
 <section class="hero">
   <div class="swiper-container hero-swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image: url('img/hero1.jpg')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero6.JPG')"></div>
-      <div class="swiper-slide" style="background-image: url('img/hero7.png')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero9.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero1.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero6.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero7.png')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero9.jpg')"></div>
     </div>
     <!-- Pagination removed -->
   </div>
@@ -833,14 +833,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	
 <!-- Search Popup -->
-<div id="searchPopup">
-  <div class="search-header">
-    <input type="text" id="searchInput" placeholder="Search place..." />
-    <i class="fas fa-microphone voice-btn" style="margin-left: 10px; color: #007b7f; border: 2px solid #007b7f; padding: 12px 14px; border-radius: 8px; outline: none; box-sizing: border-box; margin: 0; flex: 1;"></i>
-    <i class="fas fa-times close-btn"></i>
+<div id="searchPopup" class="search-popup">
+  <div class="search-content">
+    <input type="text" placeholder="Search..." id="searchInput" />
+    <button id="voiceBtn"><i class="fas fa-microphone"></i></button>
+    <span id="closeBtn">&times;</span>
   </div>
-
-  <div id="searchResults"></div>
 </div>
 
 
@@ -849,37 +847,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 <script>
-// DOM Elements
+// === DOM Elements ===
 const searchBtnTop = document.querySelector(".search-btn-top");
 const searchBtnBottom = document.querySelector(".search-btn-bottom");
 const searchPopup = document.getElementById("searchPopup");
 const searchInput = document.getElementById("searchInput");
 const gallery = document.getElementById("gallery");
-const closeBtn = searchPopup.querySelector(".close-btn");
-const voiceBtn = searchPopup.querySelector(".voice-btn");
-const filterSection = document.querySelector(".filter-wrapper");
+const closeBtn = document.querySelector(".close-btn");
+const voiceBtn = document.querySelector(".voice-btn");
 
-// Open/Close Popup
+// === Open / Close Popup ===
 function openSearchPopup() {
-  searchPopup.style.display = "flex";
+  searchPopup.style.display = "block";
   searchInput.focus();
 }
 function closeSearchPopup() {
   searchPopup.style.display = "none";
 }
 
-// Event Listeners
+// Attach to buttons
 searchBtnTop.addEventListener("click", openSearchPopup);
 searchBtnBottom.addEventListener("click", openSearchPopup);
 closeBtn.addEventListener("click", closeSearchPopup);
-searchPopup.addEventListener("click", (e) => {
-  if (e.target === searchPopup) closeSearchPopup();
-});
 
-// Search Function
+// === Search Functionality ===
 function performSearch() {
   const query = searchInput.value.toLowerCase().trim();
   const items = Array.from(gallery.querySelectorAll(".gallery-item"));
+
+  // Separate matching and non-matching items
   const matchingItems = [];
   const otherItems = [];
 
@@ -892,28 +888,20 @@ function performSearch() {
     }
   });
 
-  // Reorder gallery
+  // Clear gallery and append in new order
   gallery.innerHTML = "";
   matchingItems.concat(otherItems).forEach(item => gallery.appendChild(item));
 
-  // Scroll to filter section
-  if (filterSection) {
-    filterSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Scroll to first matching item
+  if (matchingItems.length > 0) {
+    matchingItems[0].scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
-// Input Event
+// Trigger search on input
 searchInput.addEventListener("input", performSearch);
 
-// Enter Key Functionality
-searchInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    performSearch();
-    closeSearchPopup();
-  }
-});
-
-// Voice Search
+// === Voice Search ===
 if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
@@ -921,18 +909,22 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
 
-  voiceBtn.addEventListener("click", () => recognition.start());
+  voiceBtn.addEventListener("click", () => {
+    recognition.start();
+  });
 
   recognition.addEventListener("result", (event) => {
     const transcript = event.results[0][0].transcript;
     searchInput.value = transcript;
     performSearch();
-    closeSearchPopup();
+  });
+
+  recognition.addEventListener("end", () => {
+    // Optional: restart recognition if needed
   });
 } else {
-  if (voiceBtn) voiceBtn.style.display = "none"; // Hide if unsupported
+  voiceBtn.style.display = "none"; // Hide if not supported
 }
-
 </script>
 
 
@@ -993,6 +985,5 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   </script>
 </body>
 </html>
-
 
 
