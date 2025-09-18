@@ -901,6 +901,14 @@ function performSearch() {
 // Input Event
 searchInput.addEventListener("input", performSearch);
 
+// ✅ New: Enter key triggers search + close popup
+searchInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    performSearch();
+    closeSearchPopup();
+  }
+});
+
 // Voice Search
 if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
