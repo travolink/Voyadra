@@ -158,15 +158,6 @@ a {
 
   <!-- Desktop Filter -->
   <div class="filter-bar">
-    <div class="custom-select" id="regionSelect">
-      <div class="selected"><span>All Regions</span> <i class="fas fa-chevron-down"></i></div>
-      <div class="options">
-        <div data-value="all">All Regions</div>
-        <div data-value="North">North</div>
-        <div data-value="Central">Central</div>
-        <div data-value="South">South</div>
-      </div>
-    </div>
     <div class="custom-select" id="districtSelect">
       <div class="selected"><span>All Districts</span> <i class="fas fa-chevron-down"></i></div>
       <div class="options">
@@ -200,15 +191,6 @@ a {
     <div class="popup-content">
       <span class="close-btn" id="closePopup">&times;</span>
       <h3>Filter Beaches</h3>
-      <div class="custom-select" id="popupRegionSelect">
-        <div class="selected"><span>All Regions</span> <i class="fas fa-chevron-down"></i></div>
-        <div class="options">
-          <div data-value="all">All Regions</div>
-          <div data-value="North">North</div>
-          <div data-value="Central">Central</div>
-          <div data-value="South">South</div>
-        </div>
-      </div>
       <div class="custom-select" id="popupDistrictSelect">
         <div class="selected"><span>All Districts</span> <i class="fas fa-chevron-down"></i></div>
         <div class="options">
@@ -359,79 +341,160 @@ a {
 </div>
 
 <script>
-// Hero slider
-const heroImages = document.querySelectorAll('.hero img');
-const heroText = document.getElementById('heroText');
-const texts = [
-  "Explore the Beautiful Beaches of Kerala",
-  "Relax at Pristine Shores",
-  "Discover Hidden Gems by the Sea"
-];
-let current = 0;
-setInterval(() => {
-  heroImages[current].classList.remove('active');
-  current = (current+1) % heroImages.length;
-  heroImages[current].classList.add('active');
-  heroText.innerText = texts[current];
-}, 4000);
+document.addEventListener('DOMContentLoaded', () => {
 
-// Filter cards
-function filterCards(regionValue, districtValue){
-  document.querySelectorAll('.beach-card').forEach(card=>{
-    const matchRegion = regionValue==='all' || card.dataset.region===regionValue;
+  /* ---------- Hero slider ---------- */
+  const heroImages = document.querySelectorAll('.hero img');
+  const heroText = document.getElementById('heroText');
+  const texts = [
+    "Explore the Beautiful Beaches of Kerala",
+    "Relax at Pristine Shores",
+    "Discover Hidden Gems by the Sea"
+  ];
+  let current = 0;
+  if (heroImages.length) {
+    heroImages.forEach(img => img.classList.remove('active'));
+    heroImages[0].classList.add('active');
+    if (heroText) heroText.innerText = texts[0] || '';
 
-    // split multiple districts into an array
-    const districts = card.dataset.district.split(',').map(d => d.trim());
-    const matchDistrict = districtValue==='all' || districts.includes(districtValue);
+    setInterval(() => {
+      heroImages[current].classList.remove('active');
+      current = (current + 1) % heroImages.length;
+      heroImages[current].classList.add('active');
+      if (heroText) heroText.innerText = texts[current] || texts[0];
+    }, 4000);
+  }
 
-    card.style.display = (matchRegion && matchDistrict) ? 'block' : 'none';
-  });
-}
-
-// Custom dropdown
-function setupCustomSelect(id, callback){
-  const container=document.getElementById(id);
-  const selected=container.querySelector('.selected');
-  const optionsContainer=container.querySelector('.options');
-  const options=optionsContainer.querySelectorAll('div');
-
-  selected.addEventListener('click',()=>container.classList.toggle('open'));
-  options.forEach(opt=>{
-    opt.addEventListener('click',()=>{
-      selected.querySelector('span').innerText=opt.innerText;
-      container.dataset.value=opt.dataset.value;
-      container.classList.remove('open');
-      callback(opt.dataset.value);
+  /* ---------- Filter logic (district only, supports multiple) ---------- */
+  function filterCards(districtValue) {
+    document.querySelectorAll('.beach-card').forEach(card => {
+      if (districtValue === 'all' || !districtValue) {
+        card.style.display = '';
+      } else {
+        const districts = card.dataset.district
+          ? card.dataset.district.toLowerCase().split(" ")
+          : [];
+        card.style.display = districts.includes(districtValue.toLowerCase()) ? '' : 'none';
+      }
     });
+  }
+
+  // keep current selected state
+  let currentDistrict = 'all';
+
+  // helper to read desktop/popup value
+  function readValue(desktopId, popupId) {
+    const desktop = document.getElementById(desktopId);
+    if (desktop && desktop.dataset.value) return desktop.dataset.value;
+    const popup = document.getElementById(popupId);
+    if (popup && popup.dataset.value) return popup.dataset.value;
+    return 'all';
+  }
+
+  currentDistrict = readValue('districtSelect', 'popupDistrictSelect');
+  filterCards(currentDistrict);
+
+  /* ---------- Custom select setup ---------- */
+  function setupCustomSelect(id) {
+    const container = document.getElementById(id);
+    if (!container) return;
+
+    const selected = container.querySelector('.selected');
+    const optionsContainer = container.querySelector('.options');
+    if (!selected || !optionsContainer) return;
+
+    const options = Array.from(optionsContainer.querySelectorAll('div'));
+
+    selected.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.custom-select').forEach(sel => {
+        if (sel !== container) sel.classList.remove('open');
+      });
+      container.classList.toggle('open');
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const value = opt.dataset.value ?? opt.innerText.trim();
+        const text = opt.innerText.trim();
+
+        const span = container.querySelector('.selected span');
+        if (span) span.innerText = text;
+        container.dataset.value = value;
+
+        document.querySelectorAll('.custom-select').forEach(sel => sel.classList.remove('open'));
+
+        // Mirror desktop ↔ popup
+        if (id === 'districtSelect' || id === 'popupDistrictSelect') {
+          const desktop = document.getElementById('districtSelect');
+          const popup = document.getElementById('popupDistrictSelect');
+          if (desktop) {
+            desktop.dataset.value = value;
+            const dsp = desktop.querySelector('.selected span');
+            if (dsp) dsp.innerText = text;
+          }
+          if (popup) {
+            popup.dataset.value = value;
+            const psp = popup.querySelector('.selected span');
+            if (psp) psp.innerText = text;
+          }
+          currentDistrict = value;
+        }
+
+        // Apply filter
+        filterCards(currentDistrict || 'all');
+
+        // Auto-close popup overlay on mobile
+        if (id.startsWith('popup')) {
+          const filterPopup = document.getElementById('filterPopup');
+          if (filterPopup) filterPopup.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  setupCustomSelect('districtSelect');
+  setupCustomSelect('popupDistrictSelect');
+
+  /* ---------- Popup open/close ---------- */
+  const filterPopup = document.getElementById('filterPopup');
+  const closePopupBtn = document.getElementById('closePopup');
+
+  const filterToggle = document.querySelector('.filter-toggle');
+  const filterText = document.getElementById('filterText');
+
+  function openFilter() {
+    if (filterPopup) filterPopup.style.display = 'flex';
+  }
+  function closeFilter() {
+    if (filterPopup) filterPopup.style.display = 'none';
+  }
+
+  if (filterToggle) filterToggle.addEventListener('click', openFilter);
+  if (filterText) filterText.addEventListener('click', openFilter);
+  if (closePopupBtn) closePopupBtn.addEventListener('click', closeFilter);
+
+  if (filterPopup) {
+    filterPopup.addEventListener('click', (e) => {
+      if (e.target === filterPopup) closeFilter();
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && filterPopup) filterPopup.style.display = 'none';
   });
-}
 
-// Desktop selects
-const regionSelect=document.getElementById('regionSelect');
-const districtSelect=document.getElementById('districtSelect');
-setupCustomSelect('regionSelect',val=>filterCards(val,districtSelect.dataset.value||'all'));
-setupCustomSelect('districtSelect',val=>filterCards(regionSelect.dataset.value||'all',val));
+  window.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select')) {
+      document.querySelectorAll('.custom-select').forEach(sel => sel.classList.remove('open'));
+    }
+  });
 
-// Popup selects
-const popupRegion=document.getElementById('popupRegionSelect');
-const popupDistrict=document.getElementById('popupDistrictSelect');
-setupCustomSelect('popupRegionSelect',val=>filterCards(val,popupDistrict.dataset.value||'all'));
-setupCustomSelect('popupDistrictSelect',val=>filterCards(popupRegion.dataset.value||'all',val));
-
-// Popup open/close only on "Filter" text
-const filterText = document.getElementById('filterText');
-const filterPopup = document.getElementById('filterPopup');
-const closePopup = document.getElementById('closePopup');
-
-filterText.addEventListener('click', () => {
-  filterPopup.style.display = 'flex';
-});
-closePopup.addEventListener('click',()=>filterPopup.style.display='none');
-filterPopup.addEventListener('click',e=>{if(e.target===filterPopup)filterPopup.style.display='none';});
-
-// Hide popup if resized to desktop
-window.addEventListener('resize',()=>{if(window.innerWidth>900)filterPopup.style.display='none';});
+}); // DOMContentLoaded
 </script>
+
 </body>
 </html>
+
 
