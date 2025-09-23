@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<input type="checkbox" id="popupToggle" class="popup-checkbox">
   <!-- Top Navbar -->
   <nav class="navbar">
     <div class="logo">
@@ -20,24 +21,45 @@
     </div>
     <ul class="nav-links">
       <li class="active">Home</li>
-      <li>Destinations</li>
-      <li>Explore</li>
-      <li>Gallery</li>
-      <li>Contact</li>
+    <!-- Plan Your Trip with modern popup -->
+    <li>
+      <label for="popupToggle" style="cursor:pointer;">Plan Your Trip</label>
+    </li>
+		
+      <li><a href="https://www.google.com/maps/search/nearest+tourist+places/" target="_blank">Explore</a></li>
+      <li><a href="https://www.instagram.com/voyadra" target="_blank">Insta Feed</a></li>
+      <li><a href="feedback.html">About</a></li>
     </ul>
 	  <div class="icons search-btn-top">
        <i class="fas fa-search"></i>
       </div>
   </nav>
 
+	<div class="trip-popup">
+  <!-- Close icon -->
+  <label for="popupToggle" class="popup-close-btn">
+    <i class="fas fa-times"></i>
+  </label>
+
+  <h3>Coming Soon!</h3>
+  <p>Our Trip Planner is under development. Stay tuned!</p>
+
+  <!-- Logo with loading -->
+  <div class="popup-logo-loading">
+    <img src="navlogo1.png" alt="Logo" class="popup-logo">
+    <div class="loader"></div>
+  </div>
+</div>
+
+
   <!-- ✅ Updated Hero Section -->
 <section class="hero">
   <div class="swiper-container hero-swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide" style="background-image: url('img/hero1.jpg')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero6.JPG')"></div>
-      <div class="swiper-slide" style="background-image: url('img/hero7.png')"></div>
-	  <div class="swiper-slide" style="background-image: url('img/hero9.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero1.jpg')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero6.jpg')"></div>
+      <div class="swiper-slide" style="background-image: url('hero7.png')"></div>
+	  <div class="swiper-slide" style="background-image: url('hero9.jpg')"></div>
     </div>
     <!-- Pagination removed -->
   </div>
@@ -100,16 +122,16 @@
         <h3>Wildlife & Nature</h3>
       </div>
 		</a>
-	<a href="Kerala_Adventure.html" style="text-decoration: none; color: inherit;">
-      <div class="card">
-        <img src="img/adventure.png" alt="Islands" />
-        <h3>Adventure</h3>
-      </div>
-		</a>
 	<a href="Kerala_Cultural & Heritage.html" style="text-decoration: none; color: inherit;">
       <div class="card">
         <img src="img/cultural.png" alt="Safari" />
         <h3>Cultural & Heritage</h3>
+      </div>
+		</a>
+	<a href="Kerala_Adventure.html" style="text-decoration: none; color: inherit;">
+      <div class="card">
+        <img src="img/adventure.png" alt="Islands" />
+        <h3>Adventure</h3>
       </div>
 		</a>
     </div>
@@ -985,22 +1007,6 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	
 	
 	
@@ -1041,8 +1047,5 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   </script>
 </body>
 </html>
-
-
-
 
 
