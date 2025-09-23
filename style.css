@@ -314,6 +314,11 @@ html, body {
   font-size: 25px;
   margin-bottom: 3px;
 }
+.bottom-nav a{
+	text-decoration: none;
+	color: inherit;
+	font-size: inherit;
+}
 .bottom-nav button.active,
 .bottom-nav button:hover {
   color: #ff8c1a;
@@ -1363,3 +1368,4 @@ td.sunday {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
