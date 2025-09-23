@@ -78,6 +78,23 @@ html, body {
   color: black;
 }
 
+.nav-links li a {
+  text-decoration: none;   
+  color: inherit;           
+}
+
+.nav-links li a:hover {
+  color: #ff8c1a;          
+}
+
+
+
+
+
+
+
+
+
 .icons {
   display: flex;
   align-items: center;
@@ -1250,3 +1267,99 @@ td.sunday {
 }
 
 
+
+
+
+/* Hide the checkbox */
+.popup-checkbox {
+  display: none;
+}
+
+/* Popup hidden by default */
+.trip-popup {
+  display: none;
+  position: fixed;      /* fixed keeps it centered on screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 1000;
+}
+
+/* Show popup when checkbox is checked */
+.popup-checkbox:checked ~ .trip-popup {
+  display: block;
+}
+
+/* Blur entire page except popup when popup is open */
+.popup-checkbox:checked ~ nav,
+.popup-checkbox:checked ~ *:not(.trip-popup) {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease;
+}
+
+/* Popup text styling */
+.trip-popup h3 {
+  margin-bottom: 10px;
+  color: #ff5722;
+}
+
+.trip-popup p {
+  font-size: 14px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+/* close-btn already styled in your CSS */
+.popup-close-btn {
+  position: absolute;   /* position relative to popup */
+  top: 10px;            /* distance from top of popup */
+  right: 10px;          /* distance from right edge */
+  cursor: pointer;
+  font-size: 15px;
+  color: #000000;
+  background: transparent;
+  border: none;
+  z-index: 1001;        /* above popup content */
+}
+
+.popup-close-btn:hover {
+  color: #e64a19;
+}
+/* Logo container */
+.popup-logo-loading {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo image */
+.popup-logo {
+  width: 170px;  /* adjust size */
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* Simple loading spinner */
+.loader {
+  border: 4px solid #f3f3f3;  /* Light grey */
+  border-top: 4px solid #007b7f; /* Highlight color */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
