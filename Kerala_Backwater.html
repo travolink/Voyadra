@@ -41,6 +41,11 @@ a {
 .bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid #ddd; justify-content:space-around; align-items:center; padding:10px 0; z-index:1000; }
 .bottom-nav button { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; font-size:12px; color:#555; transition:0.3s; }
 .bottom-nav button i { font-size:25px; margin-bottom:3px; }
+.bottom-nav a{
+	text-decoration: none;
+	color: inherit;
+	font-size: inherit;
+}
 .bottom-nav button.active, .bottom-nav button:hover { color:#ff8c1a; }
 
 /* Hero */
@@ -331,14 +336,14 @@ a {
   </div>
 </div>
 
-<!-- Bottom nav -->
-<div class="bottom-nav">
-  <a href="index.html"><button><i class="ri-home-5-fill"></i></button></a>
-  <a href=""><button><i class="ri-search-2-line"></i></button></a>
-  <a href=""><button><i class="ri-map-pin-line"></i></button></a>
-  <a href="https://www.instagram.com/voyadra"><button><i class="ri-image-line"></i></button></a>
-  <a href=""><button><i class="ri-phone-line"></i></button></a>
-</div>
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="active"><a href="index.html"><i class="ri-tent-line"></i></a></button>
+	<button class="search-btn-bottom"><i class="ri-search-eye-line"></i></button>
+    <button><a href="https://www.google.com/maps/search/nearest+tourist+places/" target="_blank"><i class="ri-map-pin-line"></i></a></button>
+    <button><a href="https://www.instagram.com/voyadra" target="_blank"><i class="ri-instagram-line"></i></a></button>
+    <button><a href="feedback.html"><i class="ri-user-heart-line"></i></a></button>
+  </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -496,5 +501,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
