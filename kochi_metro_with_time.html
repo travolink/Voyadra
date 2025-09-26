@@ -26,7 +26,7 @@ html, body {
   padding: 10px;
   padding-top: 40px;
   padding-bottom: 30px;
-  
+  overscroll-behavior-y: contain;
 }
 
 /* Navbar */
@@ -241,36 +241,6 @@ html, body {
     });
   </script>
 
-	<script>
-let startY = 0;
-let isPulling = false;
-
-document.addEventListener("touchstart", function (e) {
-  if (document.scrollingElement.scrollTop === 0) {
-    startY = e.touches[0].pageY;
-    isPulling = true;
-  } else {
-    isPulling = false;
-  }
-}, { passive: true });
-
-document.addEventListener("touchmove", function (e) {
-  if (!isPulling) return;
-
-  let currentY = e.touches[0].pageY;
-  let diff = currentY - startY;
-
-  // Only trigger refresh if user pulls down more than 70px
-  if (diff > 70) {
-    isPulling = false;
-    location.reload(); // Refresh the page
-  }
-}, { passive: true });
-</script>
-
-
-	
-
   <!-- Bottom Nav -->
   <div class="bottom-nav">
     <button class="active"><a href="index.html"><i class="ri-tent-line"></i></a></button>
@@ -312,6 +282,7 @@ document.addEventListener("touchmove", function (e) {
 
 </body>
 </html>
+
 
 
 
